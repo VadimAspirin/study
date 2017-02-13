@@ -65,9 +65,12 @@ namespace Laba1 {
 				}
 		public bool Right {
 			get {
-				if ((float)(Math.Pow (edgeFirst.Length, 2) + Math.Pow (edgeSecond.Length, 2)) == (float)Math.Pow (edgeLast.Length, 2) ||
-					(float)(Math.Pow (edgeFirst.Length, 2) + Math.Pow (edgeLast.Length, 2)) == (float)Math.Pow (edgeSecond.Length, 2) ||
-					(float)(Math.Pow (edgeLast.Length, 2) + Math.Pow (edgeSecond.Length, 2)) == (float)Math.Pow (edgeFirst.Length, 2)) {
+				if ((float)(Math.Pow (edgeFirst.Length, 2) + Math.Pow (edgeSecond.Length, 2)) == 
+					(float)Math.Pow (edgeLast.Length, 2) ||
+					(float)(Math.Pow (edgeFirst.Length, 2) + Math.Pow (edgeLast.Length, 2)) == 
+					(float)Math.Pow (edgeSecond.Length, 2) ||
+					(float)(Math.Pow (edgeLast.Length, 2) + Math.Pow (edgeSecond.Length, 2)) == 
+					(float)Math.Pow (edgeFirst.Length, 2)) {
 					return true;
 					}
 				else {
@@ -121,4 +124,5 @@ namespace Laba1 {
 			Console.ReadKey();
 			}
 		}
+		
 	}
