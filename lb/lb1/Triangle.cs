@@ -26,17 +26,17 @@ namespace Laba1 {
 			edgeLast = new Edge (pointFirst, pointLast);
 			}
 		public double Perimeter {
-		    get {
-			return edgeFirst.Length + edgeSecond.Length + edgeLast.Length;
-					}
+			get {
+				return edgeFirst.Length + edgeSecond.Length + edgeLast.Length;
 				}
+			}
 		public double Area {
-		    get {
-			double p = Perimeter / 2;
-			return Math.Sqrt (p * (p - edgeFirst.Length) *
+			get {
+				double p = Perimeter / 2;
+				return Math.Sqrt (p * (p - edgeFirst.Length) *
 							 (p - edgeSecond.Length) * (p - edgeLast.Length));
-					}
 				}
+			}
 		public bool Right {
 			get {
 				if ((float)(Math.Pow (edgeFirst.Length, 2) + Math.Pow (edgeSecond.Length, 2)) == 
