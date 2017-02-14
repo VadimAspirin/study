@@ -6,6 +6,18 @@ namespace Laba1 {
 		private Point[] points;
 		private Edge[] edges;
 		public Polygon (Point[] points) {
+			if (points.Length <= 2) {
+				Console.WriteLine ("error: Задан не многоугольник");
+				Environment.Exit (0);
+				}
+			for (int i = 0; i < points.Length; ++i) {
+				for (int j = i + 1; j < points.Length; ++j) {
+					if (points[i] == points[j]) {
+						Console.WriteLine ("error: Две или более точек многоугольника равны");
+						Environment.Exit (0);
+						}
+					}
+				}
 			this.points = points;
 			edges = new Edge[points.Length];
 			for (int i = 0; ; ++i) {
@@ -42,6 +54,36 @@ namespace Laba1 {
 					buf2 += points[i].Y * points[i+1].X;
 					}
 				return (buf1 - buf2) / 2;
+				}
+			}
+		public bool Equilateral {
+			get {
+				for (int i = 0; i < edges.Length; ++i)
+					for (int j = i + 1; j < edges.Length; ++j)
+						if (edges[i].Length != edges[j].Length)
+							return false;
+				return true;
+				}
+			}
+		public int CountAngles {
+			get {
+				return points.Length;
+				}
+			}
+		public bool Convex {
+			get {
+				int plus = 0, minus = 0;
+				for (int i = 0, j = 1; i < points.Length; ++i, ++j) {
+					if (i == points.Length - 1)
+						j = 0;
+					if ((points[i].X * points[j].Y - points[j].X * points[i].Y) >= 0)
+						++plus;
+					else
+						++minus;
+					}
+				if ((plus == 0 && minus > 0) || (minus == 0 && plus > 0))
+					return true;
+				return false;
 				}
 			}
 		}
