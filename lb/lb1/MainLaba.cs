@@ -27,11 +27,28 @@ namespace Laba1 {
 					}
 				}
 			
-			Console.WriteLine("Средний периметр всех прямоугольных треугольников {0}", sumPerimeter / iRight);
-			Console.WriteLine("Средняя площадь всех равнобедренных треугольников {0}", sumArea / iIsosceles);
+			Console.WriteLine ("Средний периметр всех прямоугольных треугольников {0}", sumPerimeter / iRight);
+			Console.WriteLine ("Средняя площадь всех равнобедренных треугольников {0}", sumArea / iIsosceles);
 			
-			Console.WriteLine("Press any key to exit.");
-			Console.ReadKey();
+			// Exception test
+			try {
+				Triangle tr = new Triangle (new Point (0, 0), new Point (0, 0), new Point (0, 5.4));
+				}
+			catch (Exception ex) {
+				 Console.WriteLine(ex.Message);
+				}
+			
+			// Bonus test
+			Polygon polygon = new Polygon (new Point[] {new Point (0, 0), new Point (2, 0), new Point (3, 1), 
+							new Point (3, 3), new Point (2, 4), new Point (0, 4), new Point (-2, 2)});
+			Console.WriteLine ("Периметр: " + polygon.Perimeter);
+			Console.WriteLine ("Площадь: " + polygon.Area);
+			Console.WriteLine ("Равносторонний: " + polygon.Equilateral);
+			Console.WriteLine ("Количество углов: " + polygon.CountAngles);
+			Console.WriteLine ("Правильный: " + polygon.Convex);
+			
+			Console.WriteLine ("Press any key to exit.");
+			Console.ReadKey ();
 			}
 		}
 	

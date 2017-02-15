@@ -1,23 +1,18 @@
 using System;
 
 namespace Laba1 {
-
+	
+	/*  BONUS  */
 	class Polygon {
-		private Point[] points;
-		private Edge[] edges;
+		public readonly Point[] points;
+		public readonly Edge[] edges;
 		public Polygon (Point[] points) {
-			if (points.Length <= 2) {
-				Console.WriteLine ("error: Задан не многоугольник");
-				Environment.Exit (0);
-				}
-			for (int i = 0; i < points.Length; ++i) {
-				for (int j = i + 1; j < points.Length; ++j) {
-					if (points[i] == points[j]) {
-						Console.WriteLine ("error: Две или более точек многоугольника равны");
-						Environment.Exit (0);
-						}
-					}
-				}
+			if (points.Length <= 2)
+				throw new Exception ("error: Задан не многоугольник");
+			for (int i = 0; i < points.Length; ++i)
+				for (int j = i + 1; j < points.Length; ++j)
+					if (points[i] == points[j])
+						throw new Exception ("error: Две или более точек многоугольника равны");
 			this.points = points;
 			edges = new Edge[points.Length];
 			for (int i = 0; ; ++i) {
@@ -81,11 +76,9 @@ namespace Laba1 {
 					else
 						++minus;
 					}
-				if ((plus == 0 && minus > 0) || (minus == 0 && plus > 0))
-					return true;
-				return false;
+				return ((plus == 0 && minus > 0) || (minus == 0 && plus > 0));
 				}
 			}
 		}
-
+		
 	}
