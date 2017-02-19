@@ -17,55 +17,67 @@ namespace Laba1 {
 		}
 	
 	class Edge {
-		public readonly double Length;
+		public readonly Point PointFirst, PointSecond;
 		public Edge (Point pointFirst, Point pointSecond) {
 			if (pointFirst == pointSecond)
-				throw new Exception ("error: Длина ребра должна быть больше 0");
-			Length = Math.Sqrt (Math.Pow (pointSecond.X - pointFirst.X, 2) +
-								  Math.Pow (pointSecond.Y - pointFirst.Y, 2));
+				throw new ArgumentException ("error: Длина ребра должна быть больше 0");
+			PointFirst = pointFirst;
+			PointSecond = pointSecond;
+			}
+		public static bool operator == (Edge edgeFirst, Edge edgeSecond) {
+			return edgeFirst.Length == edgeSecond.Length;
+			}
+		public static bool operator != (Edge edgeFirst, Edge edgeSecond) {
+			return edgeFirst.Length != edgeSecond.Length;
+			}
+		public double Length {
+			get {
+				return Math.Sqrt (Math.Pow (PointSecond.X - PointFirst.X, 2) +
+								  Math.Pow (PointSecond.Y - PointFirst.Y, 2));
+				}
 			}
 		}
 	
 	class Triangle {
-		public readonly Point pointFirst, pointSecond, pointLast;
-		public readonly Edge edgeFirst, edgeSecond, edgeLast;
+		public readonly Point PointFirst, PointSecond, PointLast;
+		public readonly Edge EdgeFirst, EdgeSecond, EdgeLast;
 		public Triangle (Point pointFirst, Point pointSecond, Point pointLast) {
 			if (pointFirst == pointSecond || pointSecond == pointLast || pointFirst == pointLast )
-				throw new Exception ("error: Задан не треугольник! Две или более точек равны");
-			this.pointFirst = pointFirst;
-			this.pointSecond = pointSecond;
-			this.pointLast = pointLast;
-			edgeFirst = new Edge (pointFirst, pointSecond);
-			edgeSecond = new Edge (pointSecond, pointLast);
-			edgeLast = new Edge (pointFirst, pointLast);
+				throw new ArgumentException ("error: Задан не треугольник! Две или более точек равны");
+			PointFirst = pointFirst;
+			PointSecond = pointSecond;
+			PointLast = pointLast;
+			EdgeFirst = new Edge (pointFirst, pointSecond);
+			EdgeSecond = new Edge (pointSecond, pointLast);
+			EdgeLast = new Edge (pointFirst, pointLast);
 			}
 		public double Perimeter {
 		    get {
-				return edgeFirst.Length + edgeSecond.Length + edgeLast.Length;
+				return EdgeFirst.Length + EdgeSecond.Length + EdgeLast.Length;
 				}
 			}
 		public double Area {
 		    get {
 				double p = Perimeter / 2;
-				return Math.Sqrt (p * (p - edgeFirst.Length) *
-					   (p - edgeSecond.Length) * (p - edgeLast.Length));
+				return Math.Sqrt (p * (p - EdgeFirst.Length) *
+					   (p - EdgeSecond.Length) * (p - EdgeLast.Length));
 				}
 			}
 		public bool Right {
 			get {
-				return ((float)(Math.Pow (edgeFirst.Length, 2) + Math.Pow (edgeSecond.Length, 2)) == 
-						(float)Math.Pow (edgeLast.Length, 2) ||
-						(float)(Math.Pow (edgeFirst.Length, 2) + Math.Pow (edgeLast.Length, 2)) == 
-						(float)Math.Pow (edgeSecond.Length, 2) ||
-						(float)(Math.Pow (edgeLast.Length, 2) + Math.Pow (edgeSecond.Length, 2)) == 
-						(float)Math.Pow (edgeFirst.Length, 2));
+				return ((Math.Pow (EdgeFirst.Length, 2) + Math.Pow (EdgeSecond.Length, 2)) == 
+						Math.Pow (EdgeLast.Length, 2) ||
+						(Math.Pow (EdgeFirst.Length, 2) + Math.Pow (EdgeLast.Length, 2)) == 
+						Math.Pow (EdgeSecond.Length, 2) ||
+						(Math.Pow (EdgeLast.Length, 2) + Math.Pow (EdgeSecond.Length, 2)) == 
+						Math.Pow (EdgeFirst.Length, 2));
 				}
 			}
 		public bool Isosceles {
 			get {
-				return (edgeFirst.Length == edgeSecond.Length || 
-						edgeFirst.Length == edgeLast.Length ||
-						edgeSecond.Length == edgeLast.Length);
+				return (EdgeFirst == EdgeSecond || 
+						EdgeFirst == EdgeLast ||
+						EdgeSecond == EdgeLast);
 				}
 			}
 		}
@@ -76,11 +88,11 @@ namespace Laba1 {
 		public readonly Edge[] edges;
 		public Polygon (Point[] points) {
 			if (points.Length <= 2)
-				throw new Exception ("error: Задан не многоугольник");
+				throw new ArgumentException ("error: Задан не многоугольник");
 			for (int i = 0; i < points.Length; ++i)
 				for (int j = i + 1; j < points.Length; ++j)
 					if (points[i] == points[j])
-						throw new Exception ("error: Две или более точек многоугольника равны");
+						throw new ArgumentException ("error: Две или более точек многоугольника равны");
 			this.points = points;
 			edges = new Edge[points.Length];
 			for (int i = 0; ; ++i) {
