@@ -51,6 +51,44 @@ namespace Laba1 {
 			EdgeSecond = new Edge (pointSecond, pointLast);
 			EdgeLast = new Edge (pointFirst, pointLast);
 			}
+		public double this [int index] {
+			get {
+				switch (index) {
+					case 0:
+						return EdgeFirst.Length;
+					case 1:
+						return EdgeSecond.Length;
+					case 2:
+						return EdgeLast.Length;
+					default:
+						throw new IndexOutOfRangeException ("error: Неверное количество сторон треугольника");
+					}
+				}
+			}
+		public static bool operator == (Triangle triangleFirst, Triangle triangleSecond) {
+			int count = 0;
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					if (triangleFirst[i] == triangleSecond[j]) {
+						++count;
+						break;
+						}
+					}
+				}
+			return count >= 3;
+			}
+		public static bool operator != (Triangle triangleFirst, Triangle triangleSecond) {
+			int count = 0;
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					if (triangleFirst[i] == triangleSecond[j]) {
+						++count;
+						break;
+						}
+					}
+				}
+			return count < 3;
+			}
 		public double Perimeter {
 		    get {
 				return EdgeFirst.Length + EdgeSecond.Length + EdgeLast.Length;
@@ -84,8 +122,8 @@ namespace Laba1 {
 	
 	/*  BONUS  */
 	class Polygon {
-		public readonly Point[] points;
-		public readonly Edge[] edges;
+		public readonly Point[] Points;
+		public readonly Edge[] Edges;
 		public Polygon (Point[] points) {
 			if (points.Length <= 2)
 				throw new ArgumentException ("error: Задан не многоугольник");
@@ -93,20 +131,55 @@ namespace Laba1 {
 				for (int j = i + 1; j < points.Length; ++j)
 					if (points[i] == points[j])
 						throw new ArgumentException ("error: Две или более точек многоугольника равны");
-			this.points = points;
-			edges = new Edge[points.Length];
+			Points = points;
+			Edges = new Edge[Points.Length];
 			for (int i = 0; ; ++i) {
-				if (i == edges.Length - 1) {
-					edges[i] = new Edge (points[i], points[0]);
+				if (i == Edges.Length - 1) {
+					Edges[i] = new Edge (Points[i], Points[0]);
 					break;
 					}
-				edges[i] = new Edge (points[i], points[i+1]);
+				Edges[i] = new Edge (Points[i], Points[i+1]);
 				}
+			}
+		public double this [int index] {
+			get {
+				if (index >= Edges.Length || index < 0)
+					throw new IndexOutOfRangeException ("error: Неверное количество сторон многоугольника");
+				return Edges[index].Length;
+				}
+			}
+		public static bool operator == (Polygon triangleFirst, Polygon triangleSecond) {
+			if (triangleFirst.CountAngles != triangleSecond.CountAngles)
+				return false;
+			int count = 0;
+			for (int i = 0; i < triangleFirst.CountAngles; ++i) {
+				for (int j = 0; j < triangleFirst.CountAngles; ++j) {
+					if (triangleFirst[i] == triangleSecond[j]) {
+						++count;
+						break;
+						}
+					}
+				}
+			return count >= triangleFirst.CountAngles;
+			}
+		public static bool operator != (Polygon triangleFirst, Polygon triangleSecond) {
+			if (triangleFirst.CountAngles != triangleSecond.CountAngles)
+				return true;
+			int count = 0;
+			for (int i = 0; i < triangleFirst.CountAngles; ++i) {
+				for (int j = 0; j < triangleFirst.CountAngles; ++j) {
+					if (triangleFirst[i] == triangleSecond[j]) {
+						++count;
+						break;
+						}
+					}
+				}
+			return count < triangleFirst.CountAngles;
 			}
 		public double Perimeter {
 		    get {
 				double sum = 0;
-				foreach (Edge i in edges)
+				foreach (Edge i in Edges)
 					sum += i.Length;
 				return sum;
 				}
@@ -115,38 +188,38 @@ namespace Laba1 {
 		    get {
 				double buf1 = 0, buf2 = 0;
 				for (int i = 0; ; ++i) {
-					if (i == points.Length - 1) {
-						buf1 += points[i].X * points[0].Y;
-						buf2 += points[i].Y * points[0].X;
+					if (i == Points.Length - 1) {
+						buf1 += Points[i].X * Points[0].Y;
+						buf2 += Points[i].Y * Points[0].X;
 						break;
 						}
-					buf1 += points[i].X * points[i+1].Y;
-					buf2 += points[i].Y * points[i+1].X;
+					buf1 += Points[i].X * Points[i+1].Y;
+					buf2 += Points[i].Y * Points[i+1].X;
 					}
 				return (buf1 - buf2) / 2;
 				}
 			}
 		public bool Equilateral {
 			get {
-				for (int i = 0; i < edges.Length; ++i)
-					for (int j = i + 1; j < edges.Length; ++j)
-						if (edges[i].Length != edges[j].Length)
+				for (int i = 0; i < Edges.Length; ++i)
+					for (int j = i + 1; j < Edges.Length; ++j)
+						if (Edges[i].Length != Edges[j].Length)
 							return false;
 				return true;
 				}
 			}
 		public int CountAngles {
 			get {
-				return points.Length;
+				return Points.Length;
 				}
 			}
 		public bool Convex {
 			get {
 				int plus = 0, minus = 0;
-				for (int i = 0, j = 1; i < points.Length; ++i, ++j) {
-					if (i == points.Length - 1)
+				for (int i = 0, j = 1; i < Points.Length; ++i, ++j) {
+					if (i == Points.Length - 1)
 						j = 0;
-					if ((points[i].X * points[j].Y - points[j].X * points[i].Y) >= 0)
+					if ((Points[i].X * Points[j].Y - Points[j].X * Points[i].Y) >= 0)
 						++plus;
 					else
 						++minus;
@@ -188,7 +261,7 @@ namespace Laba1 {
 			try {
 				Triangle tr = new Triangle (new Point (0, 0), new Point (0, 0), new Point (0, 5.4));
 				}
-			catch (Exception ex) {
+			catch (ArgumentException ex) {
 				 Console.WriteLine(ex.Message);
 				}
 			

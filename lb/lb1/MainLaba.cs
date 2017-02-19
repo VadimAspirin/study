@@ -34,7 +34,7 @@ namespace Laba1 {
 			try {
 				Triangle tr = new Triangle (new Point (0, 0), new Point (0, 0), new Point (0, 5.4));
 				}
-			catch (Exception ex) {
+			catch (ArgumentException ex) {
 				 Console.WriteLine(ex.Message);
 				}
 			
