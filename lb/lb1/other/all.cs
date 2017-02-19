@@ -116,16 +116,11 @@ namespace Laba1 {
 				double buf1 = 0, buf2 = 0;
 				for (int i = 0; ; ++i) {
 					if (i == points.Length - 1) {
-						buf1+= points[i].X * points[0].Y;
+						buf1 += points[i].X * points[0].Y;
+						buf2 += points[i].Y * points[0].X;
 						break;
 						}
 					buf1 += points[i].X * points[i+1].Y;
-					}
-				for (int i = 0; ; ++i) {
-					if (i == points.Length - 1) {
-						buf2+= points[i].Y * points[0].X;
-						break;
-						}
 					buf2 += points[i].Y * points[i+1].X;
 					}
 				return (buf1 - buf2) / 2;
