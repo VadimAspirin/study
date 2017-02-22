@@ -39,17 +39,17 @@ namespace Laba1 {
 		}
 	
 	class Triangle {
-		public readonly Point PointFirst, PointSecond, PointLast;
-		public readonly Edge EdgeFirst, EdgeSecond, EdgeLast;
-		public Triangle (Point pointFirst, Point pointSecond, Point pointLast) {
-			if (pointFirst == pointSecond || pointSecond == pointLast || pointFirst == pointLast )
+		public readonly Point PointFirst, PointSecond, PointThird;
+		public readonly Edge EdgeFirst, EdgeSecond, EdgeThird;
+		public Triangle (Point pointFirst, Point pointSecond, Point pointThird) {
+			if (pointFirst == pointSecond || pointSecond == pointThird || pointFirst == pointThird )
 				throw new ArgumentException ("error: Задан не треугольник! Две или более точек равны");
 			PointFirst = pointFirst;
 			PointSecond = pointSecond;
-			PointLast = pointLast;
+			PointThird = pointThird;
 			EdgeFirst = new Edge (pointFirst, pointSecond);
-			EdgeSecond = new Edge (pointSecond, pointLast);
-			EdgeLast = new Edge (pointFirst, pointLast);
+			EdgeSecond = new Edge (pointSecond, pointThird);
+			EdgeThird = new Edge (pointFirst, pointThird);
 			}
 		public double this [int index] {
 			get {
@@ -59,7 +59,7 @@ namespace Laba1 {
 					case 1:
 						return EdgeSecond.Length;
 					case 2:
-						return EdgeLast.Length;
+						return EdgeThird.Length;
 					default:
 						throw new IndexOutOfRangeException ("error: Неверное количество сторон треугольника");
 					}
@@ -78,44 +78,35 @@ namespace Laba1 {
 			return count >= 3;
 			}
 		public static bool operator != (Triangle triangleFirst, Triangle triangleSecond) {
-			int count = 0;
-			for (int i = 0; i < 3; ++i) {
-				for (int j = 0; j < 3; ++j) {
-					if (triangleFirst[i] == triangleSecond[j]) {
-						++count;
-						break;
-						}
-					}
-				}
-			return count < 3;
+			return !(triangleFirst == triangleSecond);
 			}
 		public double Perimeter {
 		    get {
-				return EdgeFirst.Length + EdgeSecond.Length + EdgeLast.Length;
+				return EdgeFirst.Length + EdgeSecond.Length + EdgeThird.Length;
 				}
 			}
 		public double Area {
 		    get {
 				double p = Perimeter / 2;
 				return Math.Sqrt (p * (p - EdgeFirst.Length) *
-					   (p - EdgeSecond.Length) * (p - EdgeLast.Length));
+					   (p - EdgeSecond.Length) * (p - EdgeThird.Length));
 				}
 			}
 		public bool Right {
 			get {
 				return ((Math.Pow (EdgeFirst.Length, 2) + Math.Pow (EdgeSecond.Length, 2)) == 
-						Math.Pow (EdgeLast.Length, 2) ||
-						(Math.Pow (EdgeFirst.Length, 2) + Math.Pow (EdgeLast.Length, 2)) == 
+						Math.Pow (EdgeThird.Length, 2) ||
+						(Math.Pow (EdgeFirst.Length, 2) + Math.Pow (EdgeThird.Length, 2)) == 
 						Math.Pow (EdgeSecond.Length, 2) ||
-						(Math.Pow (EdgeLast.Length, 2) + Math.Pow (EdgeSecond.Length, 2)) == 
+						(Math.Pow (EdgeThird.Length, 2) + Math.Pow (EdgeSecond.Length, 2)) == 
 						Math.Pow (EdgeFirst.Length, 2));
 				}
 			}
 		public bool Isosceles {
 			get {
 				return (EdgeFirst == EdgeSecond || 
-						EdgeFirst == EdgeLast ||
-						EdgeSecond == EdgeLast);
+						EdgeFirst == EdgeThird ||
+						EdgeSecond == EdgeThird);
 				}
 			}
 		}
@@ -148,33 +139,22 @@ namespace Laba1 {
 				return Edges[index].Length;
 				}
 			}
-		public static bool operator == (Polygon triangleFirst, Polygon triangleSecond) {
-			if (triangleFirst.CountAngles != triangleSecond.CountAngles)
+		public static bool operator == (Polygon polygonFirst, Polygon polygonSecond) {
+			if (polygonFirst.CountAngles != polygonSecond.CountAngles)
 				return false;
 			int count = 0;
-			for (int i = 0; i < triangleFirst.CountAngles; ++i) {
-				for (int j = 0; j < triangleFirst.CountAngles; ++j) {
-					if (triangleFirst[i] == triangleSecond[j]) {
+			for (int i = 0; i < polygonFirst.CountAngles; ++i) {
+				for (int j = 0; j < polygonFirst.CountAngles; ++j) {
+					if (polygonFirst[i] == polygonSecond[j]) {
 						++count;
 						break;
 						}
 					}
 				}
-			return count >= triangleFirst.CountAngles;
+			return count >= polygonFirst.CountAngles;
 			}
-		public static bool operator != (Polygon triangleFirst, Polygon triangleSecond) {
-			if (triangleFirst.CountAngles != triangleSecond.CountAngles)
-				return true;
-			int count = 0;
-			for (int i = 0; i < triangleFirst.CountAngles; ++i) {
-				for (int j = 0; j < triangleFirst.CountAngles; ++j) {
-					if (triangleFirst[i] == triangleSecond[j]) {
-						++count;
-						break;
-						}
-					}
-				}
-			return count < triangleFirst.CountAngles;
+		public static bool operator != (Polygon polygonFirst, Polygon polygonSecond) {
+			return !(polygonFirst == polygonSecond);
 			}
 		public double Perimeter {
 		    get {

@@ -30,33 +30,22 @@ namespace Laba1 {
 				return Edges[index].Length;
 				}
 			}
-		public static bool operator == (Polygon triangleFirst, Polygon triangleSecond) {
-			if (triangleFirst.CountAngles != triangleSecond.CountAngles)
+		public static bool operator == (Polygon polygonFirst, Polygon polygonSecond) {
+			if (polygonFirst.CountAngles != polygonSecond.CountAngles)
 				return false;
 			int count = 0;
-			for (int i = 0; i < triangleFirst.CountAngles; ++i) {
-				for (int j = 0; j < triangleFirst.CountAngles; ++j) {
-					if (triangleFirst[i] == triangleSecond[j]) {
+			for (int i = 0; i < polygonFirst.CountAngles; ++i) {
+				for (int j = 0; j < polygonFirst.CountAngles; ++j) {
+					if (polygonFirst[i] == polygonSecond[j]) {
 						++count;
 						break;
 						}
 					}
 				}
-			return count >= triangleFirst.CountAngles;
+			return count >= polygonFirst.CountAngles;
 			}
-		public static bool operator != (Polygon triangleFirst, Polygon triangleSecond) {
-			if (triangleFirst.CountAngles != triangleSecond.CountAngles)
-				return true;
-			int count = 0;
-			for (int i = 0; i < triangleFirst.CountAngles; ++i) {
-				for (int j = 0; j < triangleFirst.CountAngles; ++j) {
-					if (triangleFirst[i] == triangleSecond[j]) {
-						++count;
-						break;
-						}
-					}
-				}
-			return count < triangleFirst.CountAngles;
+		public static bool operator != (Polygon polygonFirst, Polygon polygonSecond) {
+			return !(polygonFirst == polygonSecond);
 			}
 		public double Perimeter {
 		    get {
