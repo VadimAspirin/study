@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace Laba2 {
 	
 	class Game {
-		private int[,] numbers;
+		protected int[,] numbers;
 		public Game (params int[] numbers) {
 			bool flag = false;
 			foreach (int i in numbers) {

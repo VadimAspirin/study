@@ -41,6 +41,16 @@ namespace Laba2 {
 					}
 				Console.Write ("\n");
 				}
+			
+			// TEST (15)2-3
+			Game3 game3 = new Game3 (1, 2, 3, 4, 5, 6, 7, 8, 0);
+			game3.NewGame(); // начать игру (перемешать)
+			int[,] buf = game3.SaveGamePosition(); // сохранить положение
+			//game3.Shift (6); // сделать ход
+			Console.WriteLine (game3.WinGame()); // вы победили?
+			game3.LoadGamePosition (buf); // загрузить положение
+			
+			
 			}
 		}
 	
