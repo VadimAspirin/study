@@ -54,7 +54,7 @@ namespace Laba2 {
 						return Tuple.Create<int,int>(i,j);
 			throw new ArgumentException ("error: Неверно задан элемент игры");
 			}
-		public void Shift (int value) {
+		public virtual void Shift (int value) {
 			bool flag = false;
 			int x0 = GetLocation(0).Item1,
 				y0 = GetLocation(0).Item2,
@@ -113,6 +113,8 @@ namespace Laba2 {
 						++count;
 			if (((GetLocation(0).Item1 + 1) + count)%2 == 0)
 				RandomizeGame ();
+			if (CheckVictoryGame())
+				RandomizeGame ();
 			}
 		public bool CheckVictoryGame () {
 			if (numbers[numbers.GetLength(0) - 1, numbers.GetLength(1) - 1] != 0)
@@ -137,39 +139,11 @@ namespace Laba2 {
 			numbers = gameStory[(gameStory.Count - 1) - countSteps];
 			SaveGamePosition ();
 			}
-		public void Shift (int value) {
-			bool flag = false;
-			int x0 = GetLocation(0).Item1,
-				y0 = GetLocation(0).Item2,
-				xv = GetLocation(value).Item1,
-				yv = GetLocation(value).Item2;
-			if (((xv - 1 ==  x0 || xv + 1 == x0) && yv == y0) || 
-				((yv - 1 ==  y0 || yv + 1 == y0) && xv == x0))
-				flag = true;
-			if (flag) {
-				int temp = numbers[x0,y0];
-				numbers[x0,y0] = numbers[xv,yv];
-				numbers[xv,yv] = temp;
-				}
-			else {
-				throw new ArgumentException ("error: Игровой элемент не может быть перемещён");
-				}
+		public override void Shift (int value) {
+			base.Shift (value);
 			SaveGamePosition ();
 			}
-/*		public void RandomizeGame () {
-			var rand = new Random ();
-			for (int i = 0; i < numbers.GetLength(0) + numbers.GetLength(1); ++i) {
-				int i1 = rand.Next (numbers.GetLength(0)),
-					j1 = rand.Next (numbers.GetLength(1)),
-					i2 = rand.Next (numbers.GetLength(0)),
-					j2 = rand.Next (numbers.GetLength(1));
-				int temp = numbers[i1,j1];
-				numbers[i1,j1] = numbers[i2,j2];
-				numbers[i2,j2] = temp;
-				}
-			SaveGamePosition ();
-			}
-*/
+
 		}
 
 	class MainLaba {
@@ -186,7 +160,7 @@ namespace Laba2 {
 				Console.Write ("\n");
 				}
 
-			Console.Write ("(6)\n");
+/*			Console.Write ("(6)\n");
 			game.Shift (6);
 			
 			for (int i = 0; i < game.GetLength(0); ++i) {
@@ -215,7 +189,7 @@ namespace Laba2 {
 					}
 				Console.Write ("\n");
 				}
-			
+*/			
 			// test input from csv
 			Game game1 = Game.InputFromCSV ("15.csv");
 			Console.Write ("\n");

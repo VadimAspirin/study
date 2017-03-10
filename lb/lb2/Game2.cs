@@ -23,6 +23,8 @@ namespace Laba2 {
 						++count;
 			if (((GetLocation(0).Item1 + 1) + count)%2 == 0)
 				RandomizeGame ();
+			if (CheckVictoryGame())
+				RandomizeGame ();
 			}
 		public bool CheckVictoryGame () {
 			if (numbers[numbers.GetLength(0) - 1, numbers.GetLength(1) - 1] != 0)

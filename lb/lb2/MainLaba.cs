@@ -5,6 +5,9 @@ namespace Laba2 {
 	class MainLaba {
 		static void Main () {
 			Game3 game = new Game3 (1, 2, 3, 4, 5, 6, 7, 8, 0);
+			Console.WriteLine (game.CheckVictoryGame());
+			game.RandomizeGame();
+			Console.WriteLine (game.CheckVictoryGame());
 			
 			for (int i = 0; i < game.GetLength(0); ++i) {
 				for (int j = 0; j < game.GetLength(1); ++j) {
@@ -13,7 +16,7 @@ namespace Laba2 {
 				Console.Write ("\n");
 				}
 
-			Console.Write ("(6)\n");
+/*			Console.Write ("(6)\n");
 			game.Shift (6);
 			
 			for (int i = 0; i < game.GetLength(0); ++i) {
@@ -42,7 +45,7 @@ namespace Laba2 {
 					}
 				Console.Write ("\n");
 				}
-			
+*/			
 			// test input from csv
 			Game game1 = Game.InputFromCSV ("15.csv");
 			Console.Write ("\n");
@@ -52,9 +55,6 @@ namespace Laba2 {
 					}
 				Console.Write ("\n");
 				}
-				
-			Game3 gg = new Game3 (1, 2, 5, 4, 3, 6, 7, 8, 0);
-			gg.RandomizeGame();
 			
 			}
 		}
