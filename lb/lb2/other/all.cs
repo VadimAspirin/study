@@ -114,15 +114,14 @@ namespace Laba2 {
 			if (((GetLocation(0).Item1 + 1) + count)%2 == 0)
 				RandomizeGame ();
 			}
-		public bool VictoryGame () {
-			int count = 0, x = 1;
-			for (int i = 0; i < numbers.GetLength(0); ++i) {
-				for (int j = 0; j < numbers.GetLength(1); ++j, ++x) {
-					if (numbers[i,j] == x)
-						++count;
-					}
-				}
-			return (count == (x - 2));
+		public bool CheckVictoryGame () {
+			if (numbers[numbers.GetLength(0) - 1, numbers.GetLength(1) - 1] != 0)
+				return false;
+			for (int i = 0, x = 1; i < numbers.GetLength(0); ++i)
+				for (int j = 0; j < numbers.GetLength(1) && x < numbers.GetLength(0) * numbers.GetLength(1); ++j, ++x)
+					if (!(numbers[i,j] == x))
+						return false;
+			return true;
 			}
 		}
 	
@@ -176,6 +175,9 @@ namespace Laba2 {
 	class MainLaba {
 		static void Main () {
 			Game3 game = new Game3 (1, 2, 3, 4, 5, 6, 7, 8, 0);
+			Console.WriteLine (game.CheckVictoryGame());
+			game.RandomizeGame();
+			Console.WriteLine (game.CheckVictoryGame());
 			
 			for (int i = 0; i < game.GetLength(0); ++i) {
 				for (int j = 0; j < game.GetLength(1); ++j) {
@@ -223,9 +225,6 @@ namespace Laba2 {
 					}
 				Console.Write ("\n");
 				}
-				
-			Game3 gg = new Game3 (1, 2, 5, 4, 3, 6, 7, 8, 0);
-			gg.RandomizeGame();
 			
 			}
 		}
