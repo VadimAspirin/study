@@ -12,7 +12,7 @@ namespace Laba2 {
 					}
 				Console.Write ("\n");
 				}
-			
+
 			Console.Write ("(6)\n");
 			game.Shift (6);
 			
@@ -52,6 +52,9 @@ namespace Laba2 {
 					}
 				Console.Write ("\n");
 				}
+				
+			Game3 gg = new Game3 (1, 2, 5, 4, 3, 6, 7, 8, 0);
+			gg.RandomizeGame();
 			
 			}
 		}
