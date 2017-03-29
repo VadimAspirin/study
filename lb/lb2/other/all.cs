@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Laba2 {
 
@@ -92,7 +93,7 @@ namespace Laba2 {
 			}
 		}
 	
-	class Game2 : Game {
+	class Game2 : Game, IPlayable {
 		public Game2 (params int[] numbers) : base (numbers) {}
 		public void RandomizeGame () {
 			var rand = new Random ();
@@ -127,7 +128,7 @@ namespace Laba2 {
 			}
 		}
 	
-	class Game3 : Game2 {
+	class Game3 : Game2, IPlayable {
 		private List<int> history;
 		private List<int> backHistory;
 		public Game3 (params int[] numbers) : base (numbers) {
@@ -140,27 +141,82 @@ namespace Laba2 {
 			backHistory.Clear ();
 			}
 		public void Undo () {
-			if (history.Count == 1)
+			if (history.Count == 0)
 				throw new Exception ("error: История пуста");
 			backHistory.Add (history[history.Count - 1]);
 			base.Shift (history[history.Count - 1]);
-			history.RemoveAt (history[history.Count - 1]);
+			history.RemoveAt (history.Count - 1);
 			}
 		public void Redo () {
 			if (backHistory.Count == 0)
 				throw new Exception ("error: История пуста");
-			Shift (backHistory[backHistory.Count - 1]);
-			backHistory.RemoveAt (backHistory[backHistory.Count - 1]);
+			base.Shift (backHistory[backHistory.Count - 1]);
+			history.Add (backHistory[backHistory.Count - 1]);
+			backHistory.RemoveAt (backHistory.Count - 1);
 			}
 
+		}
+	
+	interface IPlayable {
+		void RandomizeGame ();
+		bool CheckVictoryGame ();
+		void Shift (int value);
+		
+		int GetLength (int dimension);
+		int this [int x, int y] { get; }
+		}
+	
+	class ConsoleGameUI {
+		private IPlayable game;
+		public ConsoleGameUI (IPlayable game) {
+			this.game = game;
+			}
+		private void GetConsoleGame () {
+			for (int i = 0; i < game.GetLength(0); ++i) {
+				for (int j = 0; j < game.GetLength(1); ++j) {
+					//Console.Write (game[i,j] + " ");
+					Console.Write (String.Format ("{0,3:0}", game[i,j]) + " ");
+					}
+				Console.Write ("\n");
+				}
+			}
+		private bool SetConsoleShift () {
+			try {
+				Console.Write ("\nПередвинуть: ");
+				int number = Int32.Parse(Console.ReadLine());
+				game.Shift (number);
+				}
+			catch (Exception) {
+				return false;
+				}
+			return true;
+			}
+		public void StartGame () {
+			while (true) {
+				Console.Clear();
+				Console.WriteLine ("ПЯТНАШКИ\n");
+				Console.WriteLine ("Для управления используйте цифры");
+				Console.WriteLine ("Что бы выйти нажмите Ctrl+C\n");
+				GetConsoleGame ();
+				if (game.CheckVictoryGame ()) {
+					Console.Clear();
+					Console.WriteLine ("************************");
+					Console.WriteLine ("****/ Вы победили! /****");
+					Console.WriteLine ("************************");
+					return;
+					}
+				SetConsoleShift ();
+				}
+			}
 		}
 
 	class MainLaba {
 		static void Main () {
+/*			Console.WriteLine ("------------Basic_functions-test--------------");
 			Game3 game = new Game3 (1, 2, 3, 4, 5, 6, 7, 8, 0);
 			Console.WriteLine (game.CheckVictoryGame());
-			game.RandomizeGame();
-			Console.WriteLine (game.CheckVictoryGame());
+//			game.RandomizeGame();
+//			Console.WriteLine (game.CheckVictoryGame());
 			
 			for (int i = 0; i < game.GetLength(0); ++i) {
 				for (int j = 0; j < game.GetLength(1); ++j) {
@@ -169,9 +225,8 @@ namespace Laba2 {
 				Console.Write ("\n");
 				}
 
-/*			Console.Write ("(6)\n");
+			Console.Write ("(6)\n");
 			game.Shift (6);
-			
 			for (int i = 0; i < game.GetLength(0); ++i) {
 				for (int j = 0; j < game.GetLength(1); ++j) {
 					Console.Write (game[i,j] + " ");
@@ -181,7 +236,6 @@ namespace Laba2 {
 			
 			Console.Write ("(5)\n");
 			game.Shift (5);
-			
 			for (int i = 0; i < game.GetLength(0); ++i) {
 				for (int j = 0; j < game.GetLength(1); ++j) {
 					Console.Write (game[i,j] + " ");
@@ -189,16 +243,44 @@ namespace Laba2 {
 				Console.Write ("\n");
 				}
 				
-			game.LoadGamePosition (0);
-			Console.Write ("На шаг назад\n");
-			
+			Console.Write ("(2)\n");
+			game.Shift (2);
 			for (int i = 0; i < game.GetLength(0); ++i) {
 				for (int j = 0; j < game.GetLength(1); ++j) {
 					Console.Write (game[i,j] + " ");
 					}
 				Console.Write ("\n");
 				}
-*/			
+			
+			Console.WriteLine ("---------------Undo-Redo-test-----------------");
+			game.Undo ();
+			game.Undo ();
+			game.Undo ();
+			game.Redo ();
+			game.Redo ();
+			game.Redo ();
+			game.Undo ();
+			game.Undo ();
+			game.Undo ();
+			game.Redo ();
+			for (int i = 0; i < game.GetLength(0); ++i) {
+				for (int j = 0; j < game.GetLength(1); ++j) {
+					Console.Write (game[i,j] + " ");
+					}
+				Console.Write ("\n");
+				}
+			
+				
+//			game.LoadGamePosition (0);
+//			Console.Write ("На шаг назад\n");
+//			
+//			for (int i = 0; i < game.GetLength(0); ++i) {
+//				for (int j = 0; j < game.GetLength(1); ++j) {
+//					Console.Write (game[i,j] + " ");
+//					}
+//				Console.Write ("\n");
+//				}
+			
 			// test input from csv
 			Game game1 = Game.InputFromCSV ("15.csv");
 			Console.Write ("\n");
@@ -209,11 +291,26 @@ namespace Laba2 {
 				Console.Write ("\n");
 				}
 			
+			Console.WriteLine ("--------------IPlayable-test------------------");
+			List<IPlayable> games = new List<IPlayable>();
+			games.Add (new Game3 (1, 2, 3, 4, 5, 6, 7, 8, 0));
+			Console.WriteLine (games[0].CheckVictoryGame());
+			games[0].RandomizeGame();
+			Console.WriteLine (games[0].CheckVictoryGame());
+			games.Add (new Game2 (1, 3, 2, 4, 5, 6, 7, 8, 0));
+			Console.WriteLine (games[1].CheckVictoryGame());
+			Console.WriteLine (games[1][0,2]);
+*/			
+//			Console.WriteLine ("------------ConsoleGameUI-test----------------");
+			IPlayable gm = new Game3 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0);
+			gm.RandomizeGame();
+			ConsoleGameUI CG = new ConsoleGameUI (gm);
+			CG.StartGame ();
 			}
 		}
 	
 	}
 
-
+//Проверка csv на корректность данных и их расположния
 //Point класс
 //Класс с 2 массивами - для двойной индексации
