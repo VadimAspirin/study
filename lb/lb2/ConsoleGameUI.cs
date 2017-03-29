@@ -14,7 +14,7 @@ namespace Laba2
 		{
 			this.game = game;
 		}
-		private void GetConsoleGame () 
+		private void Print () 
 		{
 			for (int i = 0; i < game.GetLength(0); ++i) 
 			{
@@ -25,19 +25,33 @@ namespace Laba2
 				Console.Write ("\n");
 			}
 		}
-		private bool SetConsoleShift () 
+		private void Shift () 
 		{
-			try 
+			while (true) 
 			{
-				Console.Write ("\nПередвинуть: ");
-				int number = Int32.Parse(Console.ReadLine());
-				game.Shift (number);
+				try 
+				{
+					Console.Write ("\nПередвинуть: ");
+					int number = Int32.Parse(Console.ReadLine());
+					game.Shift (number);
+				}
+				catch (ArgumentException) 
+				{
+					Console.WriteLine ("Введённая костяшка не может быть перемещена!");
+					continue;
+				}
+				catch (FormatException) 
+				{
+					Console.WriteLine ("Введён не номер!");
+					continue;
+				}
+				catch (OverflowException) 
+				{
+					Console.WriteLine ("Введённый номер некорректен!");
+					continue;
+				}
+				break;
 			}
-			catch (Exception) 
-			{
-				return false;
-			}
-			return true;
 		}
 		public void StartGame () 
 		{
@@ -45,9 +59,9 @@ namespace Laba2
 			{
 				Console.Clear();
 				Console.WriteLine ("ПЯТНАШКИ\n");
-				Console.WriteLine ("Для управления используйте цифры");
+				Console.WriteLine ("Для управления используйте номера");
 				Console.WriteLine ("Что бы выйти нажмите Ctrl+C\n");
-				GetConsoleGame ();
+				Print ();
 				if (game.CheckVictoryGame ()) 
 				{
 					Console.Clear();
@@ -56,7 +70,7 @@ namespace Laba2
 					Console.WriteLine ("************************");
 					return;
 				}
-				SetConsoleShift ();
+				Shift ();
 			}
 		}
 	}

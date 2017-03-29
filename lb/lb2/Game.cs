@@ -10,17 +10,20 @@ namespace Laba2
 		protected int[,] numbers;
 		public Game (params int[] numbers) 
 		{
-			bool flag = false;
-			foreach (int i in numbers) 
+			for (int i = 0; i < numbers.Length; ++i) 
 			{
-				if (i == 0) 
+				bool flag = false;
+				for (int j = 0; j < numbers.Length; ++j) 
 				{
-					flag = true;
-					break;
+					if (i == numbers[j]) 
+					{
+						flag = true;
+						break;
+					}
 				}
+				if (!flag)
+					throw new ArgumentException ("error: Пропущен один или несколько игровых элементов");
 			}
-			if (!flag)
-				throw new ArgumentException ("error: Отсутствует нулевой элемент");
 			if (numbers.Length < 4 || simple (numbers.Length))
 				throw new ArgumentException ("error: Невозможно создать игру по данному количеству элементов");
 			int edge = 0;

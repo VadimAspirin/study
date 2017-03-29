@@ -6,7 +6,7 @@ namespace Laba2
 	class Game2 : Game, IPlayable 
 	{
 		public Game2 (params int[] numbers) : base (numbers) {}
-		public void RandomizeGame () 
+		public virtual void RandomizeGame () 
 		{
 			var rand = new Random ();
 			for (int i = 0; i < numbers.GetLength(0) + numbers.GetLength(1); ++i) 

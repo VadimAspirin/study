@@ -9,15 +9,17 @@ namespace Laba2 {
 	class Game {
 		protected int[,] numbers;
 		public Game (params int[] numbers) {
-			bool flag = false;
-			foreach (int i in numbers) {
-				if (i == 0) {
-					flag = true;
-					break;
+			for (int i = 0; i < numbers.Length; ++i) {
+				bool flag = false;
+				for (int j = 0; j < numbers.Length; ++j) {
+					if (i == numbers[j]) {
+						flag = true;
+						break;
+						}
 					}
+				if (!flag)
+					throw new ArgumentException ("error: Пропущен один или несколько игровых элементов");
 				}
-			if (!flag)
-				throw new ArgumentException ("error: Отсутствует нулевой элемент");
 			if (numbers.Length < 4 || simple (numbers.Length))
 				throw new ArgumentException ("error: Невозможно создать игру по данному количеству элементов");
 			int edge = 0;
@@ -95,7 +97,7 @@ namespace Laba2 {
 	
 	class Game2 : Game, IPlayable {
 		public Game2 (params int[] numbers) : base (numbers) {}
-		public void RandomizeGame () {
+		public virtual void RandomizeGame () {
 			var rand = new Random ();
 			for (int i = 0; i < numbers.GetLength(0) + numbers.GetLength(1); ++i) {
 				int i1 = rand.Next (numbers.GetLength(0)),
@@ -140,6 +142,11 @@ namespace Laba2 {
 			history.Add (value);
 			backHistory.Clear ();
 			}
+		public override void RandomizeGame () {
+			base.RandomizeGame ();
+			history.Clear ();
+			backHistory.Clear ();
+			}
 		public void Undo () {
 			if (history.Count == 0)
 				throw new Exception ("error: История пуста");
@@ -171,33 +178,43 @@ namespace Laba2 {
 		public ConsoleGameUI (IPlayable game) {
 			this.game = game;
 			}
-		private void GetConsoleGame () {
+		private void Print () {
 			for (int i = 0; i < game.GetLength(0); ++i) {
 				for (int j = 0; j < game.GetLength(1); ++j) {
-					//Console.Write (game[i,j] + " ");
 					Console.Write (String.Format ("{0,3:0}", game[i,j]) + " ");
 					}
 				Console.Write ("\n");
 				}
 			}
-		private bool SetConsoleShift () {
-			try {
-				Console.Write ("\nПередвинуть: ");
-				int number = Int32.Parse(Console.ReadLine());
-				game.Shift (number);
+		private void Shift () {
+			while (true) {
+				try {
+					Console.Write ("\nПередвинуть: ");
+					int number = Int32.Parse(Console.ReadLine());
+					game.Shift (number);
+					}
+				catch (ArgumentException) {
+					Console.WriteLine ("Введённая костяшка не может быть перемещена!");
+					continue;
+					}
+				catch (FormatException) {
+					Console.WriteLine ("Введён не номер!");
+					continue;
+					}
+				catch (OverflowException) {
+					Console.WriteLine ("Введённый номер некорректен!");
+					continue;
+					}
+				break;
 				}
-			catch (Exception) {
-				return false;
-				}
-			return true;
 			}
 		public void StartGame () {
 			while (true) {
 				Console.Clear();
 				Console.WriteLine ("ПЯТНАШКИ\n");
-				Console.WriteLine ("Для управления используйте цифры");
+				Console.WriteLine ("Для управления используйте номера");
 				Console.WriteLine ("Что бы выйти нажмите Ctrl+C\n");
-				GetConsoleGame ();
+				Print ();
 				if (game.CheckVictoryGame ()) {
 					Console.Clear();
 					Console.WriteLine ("************************");
@@ -205,7 +222,7 @@ namespace Laba2 {
 					Console.WriteLine ("************************");
 					return;
 					}
-				SetConsoleShift ();
+				Shift ();
 				}
 			}
 		}
@@ -302,7 +319,7 @@ namespace Laba2 {
 			Console.WriteLine (games[1][0,2]);
 */			
 //			Console.WriteLine ("------------ConsoleGameUI-test----------------");
-			IPlayable gm = new Game3 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0);
+			IPlayable gm = new Game3 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0);
 			gm.RandomizeGame();
 			ConsoleGameUI CG = new ConsoleGameUI (gm);
 			CG.StartGame ();
@@ -314,4 +331,3 @@ namespace Laba2 {
 //Проверка csv на корректность данных и их расположния
 //Point класс
 //Класс с 2 массивами - для двойной индексации
-//Randomize перегрузить в Game3, что бы стирал историю

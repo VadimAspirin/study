@@ -19,20 +19,27 @@ namespace Laba2
 			history.Add (value);
 			backHistory.Clear ();
 		}
+		public override void RandomizeGame () 
+		{
+			base.RandomizeGame ();
+			history.Clear ();
+			backHistory.Clear ();
+		}
 		public void Undo () 
 		{
-			if (history.Count == 1)
+			if (history.Count == 0)
 				throw new Exception ("error: История пуста");
 			backHistory.Add (history[history.Count - 1]);
 			base.Shift (history[history.Count - 1]);
-			history.RemoveAt (history[history.Count - 1]);
+			history.RemoveAt (history.Count - 1);
 		}
 		public void Redo () 
 		{
 			if (backHistory.Count == 0)
 				throw new Exception ("error: История пуста");
-			Shift (backHistory[backHistory.Count - 1]);
-			backHistory.RemoveAt (backHistory[backHistory.Count - 1]);
+			base.Shift (backHistory[backHistory.Count - 1]);
+			history.Add (backHistory[backHistory.Count - 1]);
+			backHistory.RemoveAt (backHistory.Count - 1);
 		}
 
 	}
