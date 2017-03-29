@@ -53,7 +53,7 @@ namespace Laba2 {
 						return Tuple.Create<int,int>(i,j);
 			throw new ArgumentException ("error: Неверно задан элемент игры");
 			}
-		public void Shift (int value) {
+		public virtual void Shift (int value) {
 			bool flag = false;
 			int x0 = GetLocation(0).Item1,
 				y0 = GetLocation(0).Item2,

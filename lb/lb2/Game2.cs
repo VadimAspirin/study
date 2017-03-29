@@ -2,7 +2,7 @@ using System;
 
 namespace Laba2 {
 
-	class Game2 : Game {
+	class Game2 : Game, IPlayable {
 		public Game2 (params int[] numbers) : base (numbers) {}
 		public void RandomizeGame () {
 			var rand = new Random ();

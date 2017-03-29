@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Laba2 {
 
-	class Game3 : Game2 {
+	class Game3 : Game2, IPlayable {
 		private List<int> history;
 		private List<int> backHistory;
 		public Game3 (params int[] numbers) : base (numbers) {
