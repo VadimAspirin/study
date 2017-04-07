@@ -24,6 +24,10 @@ namespace Laba6
 			get { return department; }
 			set { department = value; }
 		}
+		public void NewPass ()
+		{
+			// *тут должна быть запись, на сервера/базу данных, логина пользователя в список заявок*
+		}
 	}
 	
 }

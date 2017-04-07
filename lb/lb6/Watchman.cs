@@ -7,11 +7,11 @@ namespace Laba6
 	class Watchman : ApplicationUser
 	{
 		private List<Classroom> classrooms;
-		public Watchman (string loginName, string password, string firstName, string secondName, string lastName,
-						 List<Classroom> classrooms)
+		public Watchman (string loginName, string password, string firstName, string secondName, string lastName)
 						 : base (loginName, password, firstName, secondName, lastName, "Watchman") 
 		{
-		this.classrooms = classrooms;
+			classrooms = new List<Classroom>();
+			// *тут должна быть загрузка с сервера/базы данных списка аудиторий*
 		}
 		public List<Classroom> Classrooms
 		{

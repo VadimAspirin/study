@@ -26,6 +26,15 @@ namespace Laba6
 			users.Add (new Student ("anton", "udhw7w7ddwd3f", "Ерохин", "Антон", "Сергеевич", pass, "iit", "bi607"));
 			Console.WriteLine (((Teacher)users[0]).Department);
 			Console.WriteLine (((Student)users[1]).Group);
+			Console.WriteLine (((ApplicationUser)users[0]).LoginName);
+			
+			List<string> xxx = teacherNumbers;
+			Console.WriteLine (xxx.Count);
+			teacherNumbers.Add ("123");
+			Console.WriteLine (xxx.Count);
+			var xx = new Date (1996, 2, 29);
+			Console.WriteLine (xx.Year);
+
 			
 		}
 	}

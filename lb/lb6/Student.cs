@@ -31,6 +31,10 @@ namespace Laba6
 			get { return group; }
 			set { group = value; }
 		}
+		public void NewPass ()
+		{
+			// *тут должна быть запись, на сервера/базу данных, логина пользователя в список заявок*
+		}
 	}
 	
 }
