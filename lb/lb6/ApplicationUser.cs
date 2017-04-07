@@ -21,6 +21,10 @@ namespace Laba6
 			this.lastName = lastName;
 			this.typeUser = typeUser;
 		}
+		public static ApplicationUser InputFromFile (string fileName)
+		{
+			
+		}
 		public string LoginName 
 		{
 			get { return loginName; }
