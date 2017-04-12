@@ -5,7 +5,7 @@ namespace Laba6
 
 	class Teacher : ApplicationUser
 	{
-		event DlgAddRequestDocumentRecovery StartDlgAddRequestDocumentRecovery;
+		public event DlgAddRequestDocumentRecovery StartDlgAddRequestDocumentRecovery;
 		
 		private Pass document;
 		private string department;

@@ -18,8 +18,6 @@ namespace Laba6
 			lokers.Add (new Locker ("k1", teacherNumbers));
 			Classroom classroom = new Classroom ("n1", teacherNumbers, lokers);
 			Console.WriteLine (classroom.Lockers[0].DocumentNumbers[1]);
-			classroom.TeacherHavingKey = new Teacher ("ivaaan", "wef3frwewe", "Иванов", "Иван", "Иванович", pass, "iit");
-			Console.WriteLine (classroom.TeacherHavingKey.FirstName);
 			
 			ArrayList users = new ArrayList();
 			users.Add (new Teacher ("ivaaan", "wef3frwewe", "Иванов", "Иван", "Иванович", pass, "iit"));
@@ -37,22 +35,38 @@ namespace Laba6
 			
 			Console.WriteLine ("-----------------------------------------");
 
-			List<Teacher> teachers = new List<Teacher>();
-			teachers = InputFromFile.Teachers ("./Data/Teachers.txt");
-			Console.WriteLine (teachers[1].Document.Number);
-			Console.WriteLine (teachers[1].Document.ExpirationTime.Year);
-			Console.WriteLine (teachers[2].Department);
-			
-			Console.WriteLine ("-----------------------------------------");
-
 			List<Watchman> watchmans = new List<Watchman>();
 			watchmans = InputFromFile.Watchmans ("./Data/Watchmans.txt", "./Data/Classrooms.txt", "./Data/Lockers.txt");
 			Console.WriteLine (watchmans[0].LoginName);
 			Console.WriteLine (watchmans[1].Classrooms[1].Number);
-			Console.WriteLine (watchmans[1].Classrooms[1].TeacherHavingKey == null);
+			Console.WriteLine (watchmans[1].Classrooms[1].DocumentTeacherHavingKey == "");
 			Console.WriteLine (watchmans[1].Classrooms[4].Number);
 			Console.WriteLine (watchmans[1].Classrooms[4].Lockers.Count);
-			watchmans[1].KeyReturned ("a13");
+			
+			Console.WriteLine ("-----------------------------------------");
+			
+			//List<object> g = new List<object>();
+			ArrayList g = new ArrayList();
+			object g1;
+			g.Add (new Student ("anton", "udhw7w7ddwd3f", "Ерохин", "Антон", "Сергеевич", pass, "iit", "bi607"));
+			g.Add (new Teacher ("ivaaan", "wef3frwewe", "Иванов", "Иван", "Иванович", pass, "iit"));
+			g1 = g[1];
+			Console.WriteLine (g1);
+			g.Clear();
+			Console.WriteLine (((ApplicationUser)g1).LoginName);
+			//Console.WriteLine (g[1].Department);
+			
+			Console.WriteLine ("-----------------------------------------");
+			
+			SystemOfPassesAndClassroomsKeys sys = new SystemOfPassesAndClassroomsKeys ("ivan0212", "qwf23ef");
+			Console.WriteLine(((ApplicationUser)sys.User).LoginName);
+			Console.WriteLine(((ApplicationUser)sys.User).TypeUser);
+			Console.WriteLine(sys.requestDocumentRecovery.Count);
+			((Student)sys.User).NewPass();
+			Console.WriteLine(sys.requestDocumentRecovery.Count);
+			if (sys.requestDocumentRecovery.Count > 0)
+				Console.WriteLine (sys.requestDocumentRecovery[0]);
+			
 		}
 	}
 	

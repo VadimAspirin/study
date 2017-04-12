@@ -7,68 +7,60 @@ namespace Laba6
 	class Watchman : ApplicationUser
 	{
 		private List<Classroom> classrooms;
-		public Watchman (string loginName, string password, string firstName, string secondName, string lastName, List<Classroom> classrooms)
-						 : base (loginName, password, firstName, secondName, lastName, "Watchman") 
-		{
-			this.classrooms = classrooms;
-		}
+		public Watchman (string loginName, string password, string firstName, string secondName, string lastName)
+						 : base (loginName, password, firstName, secondName, lastName, "Watchman") {}
 		public List<Classroom> Classrooms
 		{
 			get { return classrooms; }
 			set { classrooms = value; }
 		}
-		private void CheckExistence (string numberClassroom)
+		private int CheckExistence (string numberClassroom)
 		{
 			for (int i = 0; i < classrooms.Count; ++i)
 				if (classrooms[i].Number == numberClassroom)
-					return;
+					return i;
 			throw new ArgumentException ("error: Кабинет несуществует");
 		}
 		public void KeyIssued (string numberDocument, string numberClassroom)
 		{
-			CheckExistence (numberClassroom);
-			int i;
-			for (i = 0; i < classrooms.Count; i++)
-				if (classrooms[i].Number == numberClassroom)
-					break;
-			if (classrooms[i].TeacherHavingKey != null)
+			int i = CheckExistence (numberClassroom);
+			if (classrooms[i].DocumentTeacherHavingKey != "")
 				throw new ArgumentException ("error: Кабинет занят или ключ забыли вернуть");
 			for (int j = 0; j < classrooms[i].DocumentNumbers.Count; ++j)
 				if (classrooms[i].DocumentNumbers[j] == numberDocument)
 				{
-					// По номеру документа найти Teacher и присвоить classrooms[i].TeacherHavingKey
+					classrooms[i].DocumentTeacherHavingKey = numberDocument;
+					return;
 				}
 			throw new ArgumentException ("error: Нет доступа к кабинету");
 		}
 		public void KeyReturned (string numberClassroom)
 		{
-			CheckExistence (numberClassroom);
-			for (int i = 0; i < classrooms.Count; i++)
-			{
-				if (classrooms[i].Number == numberClassroom)
-				{
-					if (classrooms[i].TeacherHavingKey != null)
-					{
-						classrooms[i].TeacherHavingKey = null;
-					}
-					else
-					{
-						throw new ArgumentException ("error: Ключ уже возвращён или небыл взят");
-					}
-				}
-			}
+			int i = CheckExistence (numberClassroom);
+			if (classrooms[i].DocumentTeacherHavingKey != "")
+				classrooms[i].DocumentTeacherHavingKey = "";
+			else
+				throw new ArgumentException ("error: Ключ уже возвращён или небыл взят");
 		}
-		public void CheckAvailabilityLocker (string numberDocument, string numberClassroom, string numberLocker)
+		public bool CheckAvailabilityLocker (string numberDocument, string numberClassroom, string numberLocker)
 		{
-		
+			int i = CheckExistence (numberClassroom);
+			if (classrooms[i].Lockers.Count == 0)
+				throw new ArgumentException ("error: У кабинета нет шкафов");
+			int j = -1;
+			for (j = 0; j < classrooms[i].Lockers.Count; i++)
+				if (classrooms[i].Lockers[j].Number == numberLocker)
+					break;
+			if (j == -1)
+				throw new ArgumentException ("error: У кабинета нет шкафа под данным номером");
+			for (int y = 0; y < classrooms[i].Lockers[j].DocumentNumbers.Count; y++)
+				if (classrooms[i].Lockers[j].DocumentNumbers[y] == numberDocument)
+					return true;
+			return false;
 		}
-		public Teacher CheckWhereIsKey (string numberClassroom)
+		public string CheckWhereIsKey (string numberClassroom)
 		{
-			CheckExistence (numberClassroom);
-			for (int i = 0; i < classrooms.Count; ++i)
-				if (classrooms[i].Number == numberClassroom)
-					return classrooms[i].TeacherHavingKey;
-			return null;
+			return classrooms[CheckExistence(numberClassroom)].DocumentTeacherHavingKey;
 		}
 	}
 	

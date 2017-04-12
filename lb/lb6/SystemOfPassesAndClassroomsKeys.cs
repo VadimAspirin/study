@@ -8,29 +8,32 @@ namespace Laba6
 
 	class SystemOfPassesAndClassroomsKeys
 	{
-		private List<string> requestDocumentRecovery;
 		private ArrayList users;
+		private object user;
+		public List<string> requestDocumentRecovery; //////
+		private List<Classroom> classrooms;
 		public SystemOfPassesAndClassroomsKeys (string loginName, string password)
 		{
 			requestDocumentRecovery = new List<string>();
 			users = new ArrayList();
+			classrooms.AddRange (InputFromFile.Classrooms ("./Data/Classrooms.txt", "./Data/Lockers.txt"));
 			users.AddRange (InputFromFile.Students ("./Data/Students.txt"));
 			users.AddRange (InputFromFile.Teachers ("./Data/Teachers.txt"));
-//			users.AddRange (InputFromFile.Students ("./Data/Watchmans.txt", "./Data/Classrooms.txt", "./Data/Lockers.txt"));
-//			users.AddRange (InputFromFile.Teachers ("./Data/Securitymans.txt"));
-//			users.AddRange (InputFromFile.Students ("./Data/Deanerys.txt"));
-//			users.AddRange (InputFromFile.Teachers ("./Data/Admins.txt"));
+			users.AddRange (InputFromFile.Watchmans ("./Data/Watchmans.txt"));
+//			users.AddRange (InputFromFile.Securitymans ("./Data/Securitymans.txt"));
+//			users.AddRange (InputFromFile.Deanerys ("./Data/Deanerys.txt"));
+//			users.AddRange (InputFromFile.Admins ("./Data/Admins.txt"));
 			LogIn (loginName, password);
 		}
 		private void AddRequestDocumentRecovery (string loginName)
 		{
-			if (!requestDocumentRecovery.Contains (loginName))
+			if (requestDocumentRecovery.Contains (loginName))
 				throw new ArgumentException ("error: Запрос на восстановление пропускного документа уже поступал от данного пользователя");
 			requestDocumentRecovery.Add (loginName);
 		}
 		private void DelRequestDocumentRecovery (string loginName)
 		{
-			if (requestDocumentRecovery.Contains (loginName))
+			if (!requestDocumentRecovery.Contains (loginName))
 				throw new ArgumentException ("error: Запрос на восстановление пропускного документа уже был обработан или ещё не поступал от данного пользователя");
 			requestDocumentRecovery.Remove (loginName);
 		}
@@ -38,12 +41,27 @@ namespace Laba6
 		{
 			get { return requestDocumentRecovery; }
 		}
+		public object User
+		{
+			get { return user; }
+			set { user = value; }
+		}
+		private void createTypeUserComponents ()
+		{
+			if (((ApplicationUser)user).TypeUser == "Student" || ((ApplicationUser)user).TypeUser == "Teacher")
+				((Student)user).StartDlgAddRequestDocumentRecovery += AddRequestDocumentRecovery;
+			if (((ApplicationUser)user).TypeUser == "Watchman")
+				((Watchman)user).Classrooms = classrooms;
+				
+		}
 		private void LogIn (string loginName, string password)
 		{
 			for (int i = 0; i < users.Count; ++i)
 				if (((ApplicationUser)users[i]).LoginName == loginName && ((ApplicationUser)users[i]).Password == password)
 				{
 					//Присвоить найденного пользователя переменной и очистить users
+					user = users[i];
+					createTypeUserComponents ();
 					return;
 				}
 			throw new ArgumentException ("error: Неверный логин или пароль");

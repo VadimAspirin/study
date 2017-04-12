@@ -89,11 +89,14 @@ namespace Laba6
 			}
 			return teachers;
 		}
-		public static List<Watchman> Watchmans (string fileNameWatchmans, string fileNameClassrooms, string fileNameLockers)
-		{	
-			List<Dictionary<string, string>> readFileLineWatchmans = readFileLine (fileNameWatchmans);
+		public static List<Classroom> Classrooms (string fileNameClassrooms, string fileNameLockers)
+		{
 			List<Dictionary<string, string>> readFileLineClassrooms = readFileLine (fileNameClassrooms);
 			List<Dictionary<string, string>> readFileLineLockers = readFileLine (fileNameLockers);
+		}
+		public static List<Watchman> Watchmans (string fileNameWatchmans)
+		{	
+			List<Dictionary<string, string>> readFileLineWatchmans = readFileLine (fileNameWatchmans);
 			List<Watchman> watchmans = new List<Watchman>();
 			List<Classroom> classrooms = new List<Classroom>();
 			for (int i = 0; i < readFileLineClassrooms.Count; i++)

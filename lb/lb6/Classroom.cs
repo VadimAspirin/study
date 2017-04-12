@@ -9,13 +9,13 @@ namespace Laba6
 		public readonly string Number;
 		private List<string> documentNumbers;
 		private List<Locker> lokers;
-		private Teacher teacherHavingKey;
+		private string documentTeacherHavingKey;
 		public Classroom (string number, List<string> documentNumbers, List<Locker> lokers)
 		{
 			Number = number;
 			this.documentNumbers = documentNumbers;
 			this.lokers = lokers;
-			teacherHavingKey = null;
+			documentTeacherHavingKey = "";
 		}
 		public List<string> DocumentNumbers
 		{
@@ -27,10 +27,10 @@ namespace Laba6
 			get { return lokers; }
 			set { lokers = value; }
 		}
-		public Teacher TeacherHavingKey
+		public string DocumentTeacherHavingKey
 		{
-			get { return teacherHavingKey; }
-			set { teacherHavingKey = value; }
+			get { return documentTeacherHavingKey; }
+			set { documentTeacherHavingKey = value; }
 		}
 	}
 	
