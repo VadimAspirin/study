@@ -48,14 +48,9 @@ namespace Laba6
 			
 			Console.WriteLine ("-----------------------------------------");
 			
-			SystemOfPassesAndClassroomsKeys sys = new SystemOfPassesAndClassroomsKeys ("ivan0212", "qwf23ef");
+			SystemOfPassesAndClassroomsKeys sys = new SystemOfPassesAndClassroomsKeys ("irrr23435", "wiflwe");
 			Console.WriteLine(((ApplicationUser)sys.User).LoginName);
 			Console.WriteLine(((ApplicationUser)sys.User).TypeUser);
-			Console.WriteLine(sys.requestDocumentRecovery.Count);
-			((Student)sys.User).NewPass();
-			Console.WriteLine(sys.requestDocumentRecovery.Count);
-			if (sys.requestDocumentRecovery.Count > 0)
-				Console.WriteLine (sys.requestDocumentRecovery[0]);
 			
 		}
 	}

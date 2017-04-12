@@ -8,11 +8,7 @@ namespace Laba6
 	{
 		private List<string> numbersDocuments;
 		public Securityman (string loginName, string password, string firstName, string secondName, string lastName)
-							: base (loginName, password, firstName, secondName, lastName, "Securityman")
-		{
-			numbersDocuments = new List<string>();
-			// *тут должна быть загрузка с сервера/базы данных списка номеров пропускных документов*
-		}
+							: base (loginName, password, firstName, secondName, lastName, "Securityman") {}
 		public List<string> NumbersDocuments
 		{
 			get { return numbersDocuments; }

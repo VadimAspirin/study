@@ -20,7 +20,7 @@ namespace Laba6
 			users.AddRange (InputFromFile.Students ("./Data/Students.txt"));
 			users.AddRange (InputFromFile.Teachers ("./Data/Teachers.txt"));
 			users.AddRange (InputFromFile.Watchmans ("./Data/Watchmans.txt"));
-//			users.AddRange (InputFromFile.Securitymans ("./Data/Securitymans.txt"));
+			users.AddRange (InputFromFile.Securitymans ("./Data/Securitymans.txt"));
 //			users.AddRange (InputFromFile.Deanerys ("./Data/Deanerys.txt"));
 //			users.AddRange (InputFromFile.Admins ("./Data/Admins.txt"));
 			LogIn (loginName, password);
@@ -48,10 +48,24 @@ namespace Laba6
 		}
 		private void createTypeUserComponents ()
 		{
-			if (((ApplicationUser)user).TypeUser == "Student" || ((ApplicationUser)user).TypeUser == "Teacher")
+			if (((ApplicationUser)user).TypeUser == "Student")
 				((Student)user).StartDlgAddRequestDocumentRecovery += AddRequestDocumentRecovery;
+			if (((ApplicationUser)user).TypeUser == "Teacher")
+				((Teacher)user).StartDlgAddRequestDocumentRecovery += AddRequestDocumentRecovery;
 			if (((ApplicationUser)user).TypeUser == "Watchman")
 				((Watchman)user).Classrooms = classrooms;
+			if (((ApplicationUser)user).TypeUser == "Securityman")
+			{
+				List<string> documentNumbers = new List<string>();
+				for (int i = 0; i < users.Count; i++)
+				{
+					if (((ApplicationUser)users[i]).TypeUser == "Student")
+						documentNumbers.Add (((Student)users[i]).Document.Number);
+					if (((ApplicationUser)users[i]).TypeUser == "Teacher")
+						documentNumbers.Add (((Teacher)users[i]).Document.Number);
+				}
+				((Securityman)user).NumbersDocuments = documentNumbers;
+			}
 				
 		}
 		private void LogIn (string loginName, string password)

@@ -116,21 +116,37 @@ namespace Laba6
 			}
 			return classrooms;
 		}
-		public static List<Watchman> Watchmans (string fileNameWatchmans)
+		public static List<Watchman> Watchmans (string fileName)
 		{	
-			List<Dictionary<string, string>> readFileLineWatchmans = readFileLine (fileNameWatchmans);
+			List<Dictionary<string, string>> rfl = readFileLine (fileName);
 			List<Watchman> watchmans = new List<Watchman>();
-			for (int i = 0; i < readFileLineWatchmans.Count; i++)
+			for (int i = 0; i < rfl.Count; i++)
 			{
-				if (!(readFileLineWatchmans[i].ContainsKey("loginName") && readFileLineWatchmans[i].ContainsKey("password") && 
-					  readFileLineWatchmans[i].ContainsKey("firstName") && readFileLineWatchmans[i].ContainsKey("secondName") && 
-					  readFileLineWatchmans[i].ContainsKey("lastName")))
-					throw new ArgumentException ("error: Некорректные данные в файле: " + fileNameWatchmans);
-				watchmans.Add (new Watchman (readFileLineWatchmans[i]["loginName"], readFileLineWatchmans[i]["password"], 
-											 readFileLineWatchmans[i]["firstName"], readFileLineWatchmans[i]["secondName"], 
-											 readFileLineWatchmans[i]["lastName"]));
+				if (!(rfl[i].ContainsKey("loginName") && rfl[i].ContainsKey("password") && 
+					  rfl[i].ContainsKey("firstName") && rfl[i].ContainsKey("secondName") && 
+					  rfl[i].ContainsKey("lastName")))
+					throw new ArgumentException ("error: Некорректные данные в файле: " + fileName);
+				watchmans.Add (new Watchman (rfl[i]["loginName"], rfl[i]["password"], 
+											 rfl[i]["firstName"], rfl[i]["secondName"], 
+											 rfl[i]["lastName"]));
 			}
 			return watchmans;
+		}
+		public static List<Securityman> Securitymans (string fileName)
+		{	
+			List<Dictionary<string, string>> rfl = readFileLine (fileName);
+			List<Securityman> securitymans = new List<Securityman>();
+			for (int i = 0; i < rfl.Count; i++)
+			{
+				if (!(rfl[i].ContainsKey("loginName") && rfl[i].ContainsKey("password") && 
+					  rfl[i].ContainsKey("firstName") && rfl[i].ContainsKey("secondName") && 
+					  rfl[i].ContainsKey("lastName")))
+					throw new ArgumentException ("error: Некорректные данные в файле: " + fileName);
+				securitymans.Add (new Securityman (rfl[i]["loginName"], rfl[i]["password"], 
+												   rfl[i]["firstName"], rfl[i]["secondName"], 
+												   rfl[i]["lastName"]));
+			}
+			return securitymans;
 		}
 	}
 	
