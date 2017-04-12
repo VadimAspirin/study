@@ -93,11 +93,6 @@ namespace Laba6
 		{
 			List<Dictionary<string, string>> readFileLineClassrooms = readFileLine (fileNameClassrooms);
 			List<Dictionary<string, string>> readFileLineLockers = readFileLine (fileNameLockers);
-		}
-		public static List<Watchman> Watchmans (string fileNameWatchmans)
-		{	
-			List<Dictionary<string, string>> readFileLineWatchmans = readFileLine (fileNameWatchmans);
-			List<Watchman> watchmans = new List<Watchman>();
 			List<Classroom> classrooms = new List<Classroom>();
 			for (int i = 0; i < readFileLineClassrooms.Count; i++)
 			{
@@ -119,6 +114,12 @@ namespace Laba6
 												outputLineToList (readFileLineClassrooms[i]["documentNumbers"]),
 												lokers));
 			}
+			return classrooms;
+		}
+		public static List<Watchman> Watchmans (string fileNameWatchmans)
+		{	
+			List<Dictionary<string, string>> readFileLineWatchmans = readFileLine (fileNameWatchmans);
+			List<Watchman> watchmans = new List<Watchman>();
 			for (int i = 0; i < readFileLineWatchmans.Count; i++)
 			{
 				if (!(readFileLineWatchmans[i].ContainsKey("loginName") && readFileLineWatchmans[i].ContainsKey("password") && 
@@ -127,7 +128,7 @@ namespace Laba6
 					throw new ArgumentException ("error: Некорректные данные в файле: " + fileNameWatchmans);
 				watchmans.Add (new Watchman (readFileLineWatchmans[i]["loginName"], readFileLineWatchmans[i]["password"], 
 											 readFileLineWatchmans[i]["firstName"], readFileLineWatchmans[i]["secondName"], 
-											 readFileLineWatchmans[i]["lastName"], classrooms));
+											 readFileLineWatchmans[i]["lastName"]));
 			}
 			return watchmans;
 		}

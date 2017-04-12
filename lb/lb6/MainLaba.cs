@@ -34,16 +34,6 @@ namespace Laba6
 			Console.WriteLine (xx.Year);
 			
 			Console.WriteLine ("-----------------------------------------");
-
-			List<Watchman> watchmans = new List<Watchman>();
-			watchmans = InputFromFile.Watchmans ("./Data/Watchmans.txt", "./Data/Classrooms.txt", "./Data/Lockers.txt");
-			Console.WriteLine (watchmans[0].LoginName);
-			Console.WriteLine (watchmans[1].Classrooms[1].Number);
-			Console.WriteLine (watchmans[1].Classrooms[1].DocumentTeacherHavingKey == "");
-			Console.WriteLine (watchmans[1].Classrooms[4].Number);
-			Console.WriteLine (watchmans[1].Classrooms[4].Lockers.Count);
-			
-			Console.WriteLine ("-----------------------------------------");
 			
 			//List<object> g = new List<object>();
 			ArrayList g = new ArrayList();

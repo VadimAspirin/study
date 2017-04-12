@@ -16,7 +16,7 @@ namespace Laba6
 		{
 			requestDocumentRecovery = new List<string>();
 			users = new ArrayList();
-			classrooms.AddRange (InputFromFile.Classrooms ("./Data/Classrooms.txt", "./Data/Lockers.txt"));
+			classrooms = InputFromFile.Classrooms ("./Data/Classrooms.txt", "./Data/Lockers.txt");
 			users.AddRange (InputFromFile.Students ("./Data/Students.txt"));
 			users.AddRange (InputFromFile.Teachers ("./Data/Teachers.txt"));
 			users.AddRange (InputFromFile.Watchmans ("./Data/Watchmans.txt"));
@@ -59,7 +59,6 @@ namespace Laba6
 			for (int i = 0; i < users.Count; ++i)
 				if (((ApplicationUser)users[i]).LoginName == loginName && ((ApplicationUser)users[i]).Password == password)
 				{
-					//Присвоить найденного пользователя переменной и очистить users
 					user = users[i];
 					createTypeUserComponents ();
 					return;
