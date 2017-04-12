@@ -4,13 +4,14 @@ using System.Collections;
 
 namespace Laba6 
 {
-	delegate void DlgAddRequestDocumentRecovery (string loginName);	
+	delegate void DlgAddRequestDocumentRecovery (string loginName);
+	delegate void DlgDelRequestDocumentRecovery (string loginName);	
 
 	class SystemOfPassesAndClassroomsKeys
 	{
 		private ArrayList users;
 		private object user;
-		public List<string> requestDocumentRecovery; //////
+		private List<string> requestDocumentRecovery;
 		private List<Classroom> classrooms;
 		public SystemOfPassesAndClassroomsKeys (string loginName, string password)
 		{
@@ -21,8 +22,8 @@ namespace Laba6
 			users.AddRange (InputFromFile.Teachers ("./Data/Teachers.txt"));
 			users.AddRange (InputFromFile.Watchmans ("./Data/Watchmans.txt"));
 			users.AddRange (InputFromFile.Securitymans ("./Data/Securitymans.txt"));
-//			users.AddRange (InputFromFile.Deanerys ("./Data/Deanerys.txt"));
-//			users.AddRange (InputFromFile.Admins ("./Data/Admins.txt"));
+			users.AddRange (InputFromFile.Deanerys ("./Data/Deanerys.txt"));
+			users.AddRange (InputFromFile.Admins ("./Data/Admins.txt"));
 			LogIn (loginName, password);
 		}
 		private void AddRequestDocumentRecovery (string loginName)
@@ -66,7 +67,8 @@ namespace Laba6
 				}
 				((Securityman)user).NumbersDocuments = documentNumbers;
 			}
-				
+			if (((ApplicationUser)user).TypeUser == "Deanery")
+				((Deanery)user).StartDlgDelRequestDocumentRecovery += DelRequestDocumentRecovery;
 		}
 		private void LogIn (string loginName, string password)
 		{

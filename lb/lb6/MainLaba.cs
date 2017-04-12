@@ -48,7 +48,7 @@ namespace Laba6
 			
 			Console.WriteLine ("-----------------------------------------");
 			
-			SystemOfPassesAndClassroomsKeys sys = new SystemOfPassesAndClassroomsKeys ("irrr23435", "wiflwe");
+			SystemOfPassesAndClassroomsKeys sys = new SystemOfPassesAndClassroomsKeys ("tttt2342", "12345");
 			Console.WriteLine(((ApplicationUser)sys.User).LoginName);
 			Console.WriteLine(((ApplicationUser)sys.User).TypeUser);
 			

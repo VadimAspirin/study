@@ -148,6 +148,38 @@ namespace Laba6
 			}
 			return securitymans;
 		}
+		public static List<Deanery> Deanerys (string fileName)
+		{	
+			List<Dictionary<string, string>> rfl = readFileLine (fileName);
+			List<Deanery> deanerys = new List<Deanery>();
+			for (int i = 0; i < rfl.Count; i++)
+			{
+				if (!(rfl[i].ContainsKey("loginName") && rfl[i].ContainsKey("password") && 
+					  rfl[i].ContainsKey("firstName") && rfl[i].ContainsKey("secondName") && 
+					  rfl[i].ContainsKey("lastName")))
+					throw new ArgumentException ("error: Некорректные данные в файле: " + fileName);
+				deanerys.Add (new Deanery (rfl[i]["loginName"], rfl[i]["password"], 
+										   rfl[i]["firstName"], rfl[i]["secondName"], 
+										   rfl[i]["lastName"]));
+			}
+			return deanerys;
+		}
+		public static List<Admin> Admins (string fileName)
+		{	
+			List<Dictionary<string, string>> rfl = readFileLine (fileName);
+			List<Admin> admins = new List<Admin>();
+			for (int i = 0; i < rfl.Count; i++)
+			{
+				if (!(rfl[i].ContainsKey("loginName") && rfl[i].ContainsKey("password") && 
+					  rfl[i].ContainsKey("firstName") && rfl[i].ContainsKey("secondName") && 
+					  rfl[i].ContainsKey("lastName")))
+					throw new ArgumentException ("error: Некорректные данные в файле: " + fileName);
+				admins.Add (new Admin (rfl[i]["loginName"], rfl[i]["password"], 
+									   rfl[i]["firstName"], rfl[i]["secondName"], 
+									   rfl[i]["lastName"]));
+			}
+			return admins;
+		}
 	}
 	
 }
