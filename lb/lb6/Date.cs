@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 
 namespace Laba6 
 {
@@ -69,6 +70,17 @@ namespace Laba6
 		public int Day
 		{
 			get { return day; }
+		}
+		// format YYYY.MM.DD
+		public static Date StringInDate (string date)
+		{
+			int yyyy, mm, dd;
+			Regex reg = new Regex ("(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})");
+			Match match = reg.Match(date);
+			yyyy = int.Parse (match.Groups[1].Value);
+			mm = int.Parse (match.Groups[2].Value);
+			dd = int.Parse (match.Groups[3].Value);
+			return new Date (yyyy, mm, dd);
 		}
 	}
 	

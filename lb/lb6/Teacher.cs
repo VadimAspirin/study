@@ -5,6 +5,8 @@ namespace Laba6
 
 	class Teacher : ApplicationUser
 	{
+		event DlgAddRequestDocumentRecovery StartDlgAddRequestDocumentRecovery;
+		
 		private Pass document;
 		private string department;
 		public Teacher (string loginName, string password, string firstName, string secondName, string lastName,
@@ -26,7 +28,7 @@ namespace Laba6
 		}
 		public void NewPass ()
 		{
-			// *тут должна быть запись, на сервера/базу данных, логина пользователя в список заявок*
+			StartDlgAddRequestDocumentRecovery (loginName);
 		}
 	}
 	

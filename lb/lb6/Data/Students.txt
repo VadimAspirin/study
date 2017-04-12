@@ -1,0 +1,4 @@
+loginName password firstName secondName lastName faculty group numberPass expirationTimePass
+ivan0212 qwf23ef Иван Иванович Иванов ИИТ БИ102 o34fho4 2018.04.14
+anton4214 12345 Антон Антонович Ерохин ИИТ ПИ101 9i3o4h 2017.08.19
+serg4563 qwerty12345 Сергей Вадимович Табуреткин ИИТ ИВТ402 87ygfew 2019.01.12

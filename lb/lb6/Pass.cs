@@ -10,7 +10,7 @@ namespace Laba6
 		public Pass (string number, Date expirationTime)
 		{
 			Number = number;
-			expirationTime = ExpirationTime;
+			this.expirationTime = expirationTime;
 		}
 		public Date ExpirationTime 
 		{

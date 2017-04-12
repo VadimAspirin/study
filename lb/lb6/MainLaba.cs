@@ -34,8 +34,25 @@ namespace Laba6
 			Console.WriteLine (xxx.Count);
 			var xx = new Date (1996, 2, 29);
 			Console.WriteLine (xx.Year);
-
 			
+			Console.WriteLine ("-----------------------------------------");
+
+			List<Teacher> teachers = new List<Teacher>();
+			teachers = InputFromFile.Teachers ("./Data/Teachers.txt");
+			Console.WriteLine (teachers[1].Document.Number);
+			Console.WriteLine (teachers[1].Document.ExpirationTime.Year);
+			Console.WriteLine (teachers[2].Department);
+			
+			Console.WriteLine ("-----------------------------------------");
+
+			List<Watchman> watchmans = new List<Watchman>();
+			watchmans = InputFromFile.Watchmans ("./Data/Watchmans.txt", "./Data/Classrooms.txt", "./Data/Lockers.txt");
+			Console.WriteLine (watchmans[0].LoginName);
+			Console.WriteLine (watchmans[1].Classrooms[1].Number);
+			Console.WriteLine (watchmans[1].Classrooms[1].TeacherHavingKey == null);
+			Console.WriteLine (watchmans[1].Classrooms[4].Number);
+			Console.WriteLine (watchmans[1].Classrooms[4].Lockers.Count);
+			watchmans[1].KeyReturned ("a13");
 		}
 	}
 	
