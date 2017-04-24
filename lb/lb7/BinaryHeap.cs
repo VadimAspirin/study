@@ -22,27 +22,27 @@ namespace lb7
         {
             if (ValuesOfBinaryHeap.Contains(value))
             {
-                throw new ArgumentException("Вставляемый элемент уже имеется");
+                throw new ArgumentException("Элемент уже имеется");
             }
             else
             {
                 ValuesOfBinaryHeap.Add(value);
-                int i = HeapSize - 1;
-                int parent = (i - 1) / 2;
-                while (i > 0 && Compare(ValuesOfBinaryHeap[i].CompareTo(ValuesOfBinaryHeap[parent]), 0))
+                int buf = HeapSize - 1;
+                int parent = (buf - 1) / 2;
+                while (buf > 0 && Compare(ValuesOfBinaryHeap[buf].CompareTo(ValuesOfBinaryHeap[parent]), 0))
                 {
-                    T tempValue = ValuesOfBinaryHeap[i];
-                    ValuesOfBinaryHeap[i] = ValuesOfBinaryHeap[parent];
+                    T tempValue = ValuesOfBinaryHeap[buf];
+                    ValuesOfBinaryHeap[buf] = ValuesOfBinaryHeap[parent];
                     ValuesOfBinaryHeap[parent] = tempValue;
 
-                    i = parent;
-                    parent = (i - 1) / 2;
+                    buf = parent;
+                    parent = (buf - 1) / 2;
                 }
             }
         }
-        public virtual bool Compare(int a, int b)
+        public virtual bool Compare(int numberA, int numberB)
         {
-            return (a > b);
+            return (numberA > numberB);
         }
         public T Extract()
         {
@@ -52,7 +52,7 @@ namespace lb7
             Streamline(0);
             return ExtractedValue;
         }
-        public void Streamline(int i)
+        public void Streamline(int vertex)
         {
             int LeftChild;
             int RightChild;
@@ -60,9 +60,9 @@ namespace lb7
 
             while (true)
             {
-                LeftChild = 2 * i + 1;
-                RightChild = 2 * i + 2;
-                LargestChild = i;
+                LeftChild = 2 * vertex + 1;
+                RightChild = 2 * vertex + 2;
+                LargestChild = vertex;
 
                 if (LeftChild < HeapSize && Compare(ValuesOfBinaryHeap[LeftChild].CompareTo(ValuesOfBinaryHeap[LargestChild]), 0))
                 {
@@ -74,15 +74,15 @@ namespace lb7
                     LargestChild = RightChild;
                 }
 
-                if (LargestChild == i)
+                if (LargestChild == vertex)
                 {
                     break;
                 }
 
-                T ValueToSwap = ValuesOfBinaryHeap[i];
-                ValuesOfBinaryHeap[i] = ValuesOfBinaryHeap[LargestChild];
+                T ValueToSwap = ValuesOfBinaryHeap[vertex];
+                ValuesOfBinaryHeap[vertex] = ValuesOfBinaryHeap[LargestChild];
                 ValuesOfBinaryHeap[LargestChild] = ValueToSwap;
-                i = LargestChild;
+                vertex = LargestChild;
             }
 
         }
