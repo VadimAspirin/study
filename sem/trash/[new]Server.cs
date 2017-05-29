@@ -24,7 +24,7 @@ namespace Server
 		private Thread listeningThread;
 		private List<KeyValuePair<Socket, string>> clientsMessages;
 
-		public AsyncSocketListener(int port = 11000, int backlog = 10) 
+		public AsyncSocketListener(int port = 11000, int backlog = 100) 
 		{
 			this.port = port;
 			this.backlog = backlog;
@@ -85,8 +85,8 @@ namespace Server
 			Socket handler = state.WorkSocket;
 			// Чтение данных из клиентского сокета. 
 			int bytesRead = handler.EndReceive(ar);
-			
-			if (bytesRead > 0) 
+
+			if (bytesRead > 0)
 			{
 				// Может быть больше данных, поэтому храните данные, полученные до сих пор.
 				state.StringBuffer.Append(Encoding.Unicode.GetString(state.Buffer, 0, bytesRead));
@@ -103,8 +103,9 @@ namespace Server
 					handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(readCallback), state);
 				}
 			}
+			
 		}
-
+		
 		public string ShowMessage()
 		{
 			if (clientsMessages.Count == 0)
@@ -117,7 +118,7 @@ namespace Server
 			if (clientsMessages.Count == 0)
 				return;
 			// Преобразуем строковые данные в байтовые данные, используя Unicode-кодировку.
-			byte[] byteData = Encoding.Unicode.GetBytes(data);
+			byte[] byteData = Encoding.Unicode.GetBytes(data+"<EOF>");
 			// Начнем отправку данных на удаленное устройство.
 			clientsMessages[0].Key.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(sendCallback), clientsMessages[0].Key);
 			clientsMessages.RemoveAt(0);
@@ -132,9 +133,9 @@ namespace Server
 				// Завершение отправки данных на удаленное устройство.
 				int bytesSent = handler.EndSend(ar);
 				Console.WriteLine("Отправлено {0} байт клиенту.", bytesSent);
-
-				handler.Shutdown(SocketShutdown.Both);
-				handler.Close();
+				
+				//handler.Shutdown(SocketShutdown.Both);
+				//handler.Close();
 			} 
 			catch (Exception e) 
 			{

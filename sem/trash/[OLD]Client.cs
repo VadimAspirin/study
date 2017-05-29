@@ -7,7 +7,7 @@ using System.Text;
 namespace Client
 {
 
-	public static class AsyncClient 
+	public class AsyncClient 
 	{
 		private class StateObject 
 		{
@@ -17,11 +17,13 @@ namespace Client
 			public StringBuilder StringBuffer = new StringBuilder(); // Получена строка данных.
 		}
 		
-		private static ManualResetEvent connectDone;
-		private static ManualResetEvent sendDone;
-		private static ManualResetEvent receiveDone;
-		private static String response; // Ответ с удаленного устройства.
-/*		
+		private string host; // Адрес сервера
+		private int port; // Порт сервера
+		private ManualResetEvent connectDone;
+		private ManualResetEvent sendDone;
+		private ManualResetEvent receiveDone;
+		private String response; // Ответ с удаленного устройства.
+		
 		public AsyncClient(string host = "localhost", int port = 11000)
 		{
 			this.host = host;
@@ -31,13 +33,9 @@ namespace Client
 			receiveDone = new ManualResetEvent(false);
 			response = String.Empty;
 		}
-*/
-		public static string sendMessage(String data, string host = "localhost", int port = 11000) 
+
+		public string sendMessage(String data) 
 		{
-			connectDone = new ManualResetEvent(false);
-			sendDone = new ManualResetEvent(false);
-			receiveDone = new ManualResetEvent(false);
-			response = String.Empty;
 			try 
 			{
 	            //IPHostEntry ipHostInfo = Dns.GetHostEntry("host.contoso.com");
@@ -71,7 +69,7 @@ namespace Client
 			}
 		}
 
-		private static void connectCallback(IAsyncResult ar) 
+		private void connectCallback(IAsyncResult ar) 
 		{
 			try 
 			{
@@ -89,7 +87,7 @@ namespace Client
 			}
 		}
 
-		private static void receive(Socket client) 
+		private void receive(Socket client) 
 		{
 			try 
 			{
@@ -105,7 +103,7 @@ namespace Client
 			}
 		}
 
-		private static void receiveCallback(IAsyncResult ar)
+		private void receiveCallback(IAsyncResult ar)
 		{
 			try 
 			{
@@ -115,6 +113,7 @@ namespace Client
 				// Чтение данных с удаленного устройства.
 				int bytesRead = client.EndReceive(ar);
 				
+				Console.WriteLine("[bytesRead: {0}]", bytesRead);
 				if (bytesRead > 0) 
 				{
 					// Может быть больше данных, поэтому храните данные, полученные до сих пор.
@@ -135,7 +134,7 @@ namespace Client
 			}
 		}
 
-		private static void send(Socket client, String data) 
+		private void send(Socket client, String data) 
 		{
 			// Преобразуем строковые данные в байтовые данные, используя Unicode-кодировку.
 			byte[] byteData = Encoding.Unicode.GetBytes(data+"<EOF>");
@@ -143,7 +142,7 @@ namespace Client
 			client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(sendCallback), client);
 		}
 
-		private static void sendCallback(IAsyncResult ar) 
+		private void sendCallback(IAsyncResult ar) 
 		{
 			try 
 			{

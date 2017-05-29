@@ -28,15 +28,15 @@ public class AsynchronousClient {
     private static ManualResetEvent receiveDone = 
         new ManualResetEvent(false);
 
-    // Ответ с удаленного устройства.
+    // Ответ с удаленного устройства.
     private static String response = String.Empty;
 
     private static void StartClient() {
-        // Подключение к удаленному устройству.
+        // Подключение к удаленному устройству.
         try {
-            // Установите удаленную конечную точку для сокета.
-            // Имя удаленного устройства - «host.contoso.com».
-            //IPHostEntry ipHostInfo = Dns.Resolve("host.contoso.com");
+            // Установите удаленную конечную точку для сокета.
+            // Имя удаленного устройства - «host.contoso.com».
+            //IPHostEntry ipHostInfo = Dns.Resolve("host.contoso.com");
 			IPHostEntry ipHostInfo = Dns.Resolve("localhost");
             IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
@@ -105,7 +105,7 @@ public class AsynchronousClient {
     private static void ReceiveCallback( IAsyncResult ar ) {
         try {
             // Получить объект состояния и клиентский сокет
-            // из асинхронного объекта состояния.
+            // из асинхронного объекта состояния.
             StateObject state = (StateObject) ar.AsyncState;
             Socket client = state.workSocket;
 
@@ -116,7 +116,7 @@ public class AsynchronousClient {
                 // Может быть больше данных, поэтому храните данные, полученные до сих пор.
             state.sb.Append(Encoding.ASCII.GetString(state.buffer,0,bytesRead));
 
-                // Получить остальные данные.
+                // Получить остальные данные.
                 client.BeginReceive(state.buffer,0,StateObject.BufferSize,0,
                     new AsyncCallback(ReceiveCallback), state);
             } else {

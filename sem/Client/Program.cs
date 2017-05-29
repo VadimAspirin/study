@@ -1,16 +1,21 @@
 using System;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
 
-namespace SocketClient
+namespace Client
 {
     class Program
     {
         static void Main(string[] args)
         {
-			Client client = new Client();
-			client.SendMessage();
+			while (true)
+			{
+				Console.Write("Ваш запрос: ");
+				string message = Console.ReadLine();
+				if (message == "<exit>")
+					break;
+				Console.WriteLine("Сервер: {0}", AsyncClient.sendMessage(message));
+			}
         }
     }
 }
+
+

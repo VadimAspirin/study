@@ -1,20 +1,24 @@
 using System;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
 
-namespace SocketServer
+namespace Server
 {
     class Program
     {
         static void Main(string[] args)
         {
-			Server server = new Server();
-//			while (true)
-//			{
-//				if(server.ShowMessage() != null)
-//					server.SendMessage();
-//			}
+			AsyncSocketListener server = new AsyncSocketListener();
+
+			while (true)
+			{
+				string inMess = server.ShowMessage();
+				if (inMess == null)
+					continue;
+				Console.WriteLine("Сообщение клиента: {0}", inMess);
+				Console.Write("Ваш ответ: ");
+				string outMess = Console.ReadLine();
+				server.SendMessage(outMess);
+			}
+
         }
     }
 }

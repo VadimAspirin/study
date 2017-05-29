@@ -7,7 +7,7 @@ using System.Text;
 namespace Client
 {
 
-	public static class AsyncClient 
+	public class AsyncClient 
 	{
 		private class StateObject 
 		{
@@ -17,22 +17,13 @@ namespace Client
 			public StringBuilder StringBuffer = new StringBuilder(); // Получена строка данных.
 		}
 		
-		private static ManualResetEvent connectDone;
-		private static ManualResetEvent sendDone;
-		private static ManualResetEvent receiveDone;
-		private static String response; // Ответ с удаленного устройства.
-/*		
+		private ManualResetEvent connectDone;
+		private ManualResetEvent sendDone;
+		private ManualResetEvent receiveDone;
+		private String response; // Ответ с удаленного устройства.
+		private Socket client;
+		
 		public AsyncClient(string host = "localhost", int port = 11000)
-		{
-			this.host = host;
-			this.port = port;
-			connectDone = new ManualResetEvent(false);
-			sendDone = new ManualResetEvent(false);
-			receiveDone = new ManualResetEvent(false);
-			response = String.Empty;
-		}
-*/
-		public static string sendMessage(String data, string host = "localhost", int port = 11000) 
 		{
 			connectDone = new ManualResetEvent(false);
 			sendDone = new ManualResetEvent(false);
@@ -45,33 +36,38 @@ namespace Client
 				IPAddress ipAddress = ipHostInfo.AddressList[0];
 				IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 				// Создаем сокет TCP/IP.
-				Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+				client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 				// Подключение к удаленной конечной точке.
 				client.BeginConnect(remoteEP, new AsyncCallback(connectCallback), client);
 				connectDone.WaitOne();
-				
-				send(client, data);
+			}
+			catch (Exception e) 
+			{
+				Console.WriteLine(e.ToString());
+			}
+		}
+
+		public void sendMessage(String data) 
+		{
+			receiveDone.Reset();
+			sendDone.Reset();
+			try 
+			{
+				send(data);
 				sendDone.WaitOne();
-				
-				// Получать ответ с удаленного устройства.
-				receive(client);
+
+				receive();
 				receiveDone.WaitOne();
 				// Записываем ответ на консоль.
-				//Console.WriteLine("Сервер: {0}", response);
-				
-				client.Shutdown(SocketShutdown.Both);
-				client.Close();
-				
-				return response;
+				Console.WriteLine("Сервер: {0}", response);
 			} 
 			catch (Exception e) 
 			{
 				Console.WriteLine(e.ToString());
-				return null;
 			}
 		}
 
-		private static void connectCallback(IAsyncResult ar) 
+		private void connectCallback(IAsyncResult ar) 
 		{
 			try 
 			{
@@ -89,7 +85,7 @@ namespace Client
 			}
 		}
 
-		private static void receive(Socket client) 
+		private void receive() 
 		{
 			try 
 			{
@@ -105,7 +101,7 @@ namespace Client
 			}
 		}
 
-		private static void receiveCallback(IAsyncResult ar)
+		private void receiveCallback(IAsyncResult ar)
 		{
 			try 
 			{
@@ -115,18 +111,21 @@ namespace Client
 				// Чтение данных с удаленного устройства.
 				int bytesRead = client.EndReceive(ar);
 				
-				if (bytesRead > 0) 
+				if (bytesRead > 0)
 				{
 					// Может быть больше данных, поэтому храните данные, полученные до сих пор.
 					state.StringBuffer.Append(Encoding.Unicode.GetString(state.Buffer, 0, bytesRead));
-				    // Получить остальные данные.
-					client.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(receiveCallback), state);
-				} 
-				else 
-				{
+					// Проверяем тег конца файла. Если его нет, прочитайте больше данных.
 					response = state.StringBuffer.ToString();
-					// Сигнал о том, что все байты были получены.
-					receiveDone.Set();
+					if (response.IndexOf("<EOF>") > -1) 
+					{
+						receiveDone.Set();
+					} 
+					else
+					{
+						// Не все полученные данные. Получите больше.
+						client.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(receiveCallback), state);
+					}
 				}
 			} 
 			catch (Exception e) 
@@ -135,7 +134,7 @@ namespace Client
 			}
 		}
 
-		private static void send(Socket client, String data) 
+		private void send(String data) 
 		{
 			// Преобразуем строковые данные в байтовые данные, используя Unicode-кодировку.
 			byte[] byteData = Encoding.Unicode.GetBytes(data+"<EOF>");
@@ -143,7 +142,7 @@ namespace Client
 			client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(sendCallback), client);
 		}
 
-		private static void sendCallback(IAsyncResult ar) 
+		private void sendCallback(IAsyncResult ar) 
 		{
 			try 
 			{
@@ -160,6 +159,12 @@ namespace Client
 				Console.WriteLine(e.ToString());
 			}
 		}
+		
+		public void Disconnect()
+        {
+			client.Shutdown(SocketShutdown.Both);
+			client.Close();
+        }
 	}
 
 }

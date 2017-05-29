@@ -28,7 +28,7 @@ public class AsynchronousSocketListener {
         byte[] bytes = new Byte[1024];
 
         // Установите локальную конечную точку для сокета.
-        // DNS-имя компьютера, на котором запущен слушатель, - «host.contoso.com».
+        // DNS-имя компьютера, на котором запущен слушатель, - «host.contoso.com».
         //IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
 		IPHostEntry ipHostInfo = Dns.Resolve("localhost");
         IPAddress ipAddress = ipHostInfo.AddressList[0];
@@ -44,7 +44,7 @@ public class AsynchronousSocketListener {
             listener.Listen(100);
 
             while (true) {
-                 // Устанавливаем событие в несогласованное состояние.
+                 // Устанавливаем событие в несогласованное состояние.
                 allDone.Reset();
 
                 // Запустите асинхронный сокет для прослушивания соединений.
@@ -85,7 +85,7 @@ public class AsynchronousSocketListener {
         String content = String.Empty;
 
         // Получить объект состояния и сокет обработчика
-        // из асинхронного объекта состояния.
+        // из асинхронного объекта состояния.
         StateObject state = (StateObject) ar.AsyncState;
         Socket handler = state.workSocket;
 
